@@ -1,5 +1,17 @@
 <resources>
     <string name="app_name">Полочка</string>
-    <string name="app_slogan">Всё по полочкам</string>
-    <string name="login_button">Войти</string>
+
+    <string name="welcome_title">ПОЛОЧКА</string>
+    <string name="welcome_subtitle">Храни важное рядом</string>
+
+    <string name="action_login">Войти</string>
+    <string name="action_register">Создать аккаунт</string>
+
+    <string name="login_title">ВОЙТИ В АККАУНТ</string>
+    <string name="register_title">СОЗДАТЬ АККАУНТ</string>
+
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Пароль</string>
+    <string name="hint_name">Имя</string>
+    <string name="hint_repeat_password">Повторите пароль</string>
 </resources>

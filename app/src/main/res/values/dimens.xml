@@ -7,4 +7,8 @@
     <dimen name="space_large">32dp</dimen>
 
     <dimen name="btn_radius">30dp</dimen>
+    <dimen name="size_button_height">48dp</dimen>
+
+    <dimen name="spacing_screen_horizontal">24dp</dimen>
+    <dimen name="spacing_screen_vertical">32dp</dimen>
 </resources>
