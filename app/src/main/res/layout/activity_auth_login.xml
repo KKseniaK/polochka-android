@@ -1,6 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/loginRoot"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/color_background_primary"
+    android:paddingHorizontal="28dp">
+
+    <TextView
+        android:id="@+id/loginTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="82dp"
+        android:text="@string/login_title"
+        android:textColor="@color/color_text_primary"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/emailEditText"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/shape_field_default"
+        android:hint="@string/hint_email"
+        android:inputType="textEmailAddress"
+        android:paddingHorizontal="20dp"
+        android:textColor="@color/color_text_primary"
+        android:textColorHint="@color/color_text_hint"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/loginTitleTextView" />
+
+    <EditText
+        android:id="@+id/passwordEditText"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/shape_field_default"
+        android:hint="@string/hint_password"
+        android:inputType="textPassword"
+        android:paddingHorizontal="20dp"
+        android:textColor="@color/color_text_primary"
+        android:textColorHint="@color/color_text_hint"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/emailEditText" />
+
+    <Button
+        android:id="@+id/loginSubmitButton"
+        android:layout_width="190dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/shape_button_primary"
+        android:text="@string/action_login"
+        app:backgroundTint="@null"
+        android:textAllCaps="false"
+        android:textColor="@color/color_background_primary"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/passwordEditText" />
+
+    <TextView
+        android:id="@+id/forgotPasswordTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/action_forgot_password"
+        android:textColor="@color/auth_loginbtn_background"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@id/loginSubmitButton"
+        app:layout_constraintStart_toStartOf="@id/loginSubmitButton"
+        app:layout_constraintTop_toBottomOf="@id/loginSubmitButton" />
+
+    <TextView
+        android:id="@+id/orTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="42dp"
+        android:text="@string/text_or"
+        android:textColor="@color/auth_loginbtn_background"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/forgotPasswordTextView" />
+
+    <Button
+        android:id="@+id/googleRegisterButton"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/shape_button_social"
+        app:backgroundTint="@null"
+        android:text="@string/action_register_google"
+        android:textAllCaps="false"
+        android:textColor="@color/auth_loginbtn_background"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/orTextView" />
+
+    <Button
+        android:id="@+id/vkRegisterButton"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/shape_button_social"
+        android:text="@string/action_register_vk"
+        app:backgroundTint="@null"
+        android:textAllCaps="false"
+        android:textColor="@color/auth_loginbtn_background"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/googleRegisterButton" />
+
+    <LinearLayout
+        android:id="@+id/registerLinkLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/vkRegisterButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_login_qw"
+            android:textColor="@color/color_text_secondary"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/goRegisterTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_login_ans"
+            android:textColor="@color/color_text_secondary"
+            android:textStyle="bold"
+            android:textSize="14sp"/>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

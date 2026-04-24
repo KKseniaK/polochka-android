@@ -6,12 +6,28 @@
 
     <string name="action_login">Войти</string>
     <string name="action_register">Создать аккаунт</string>
+    <string name="action_register_vk">Регистрация с [вк]</string>
+    <string name="action_register_google">Регистрация с [гугл]</string>
+    <string name="action_sent">Отправить</string>
+    <string name="action_back_to_reg">Назад ко входу</string>
+
 
     <string name="login_title">ВОЙТИ В АККАУНТ</string>
     <string name="register_title">СОЗДАТЬ АККАУНТ</string>
+    <string name="recover_title">ВОССТАНОВЛЕНИЕ ДОСТУПА</string>
 
     <string name="hint_email">Email</string>
     <string name="hint_password">Пароль</string>
     <string name="hint_name">Имя</string>
     <string name="hint_repeat_password">Повторите пароль</string>
+    <string name="password_rule">Пароль должен содержать: минимум 6 символов, заглавные и сточные буквы, цифры и специальные символы</string>
+    <string name="recovery_tule">Введите email, и мы отправим ссылку для восстановления пароля</string>
+    <string name="action_forgot_password">Забыли пароль?</string>
+    <string name="text_or">или</string>
+    <string name="action_login_google">Войти с Google</string>
+    <string name="action_login_vk">Войти с VK</string>
+    <string name="dialog_login_qw">Нет аккаунта? </string>
+    <string name="dialog_login_ans">Зарегистрироваться</string>
+    <string name="auth_has_account">Уже есть аккаунт?</string>
+    <string name="auth_go_login">Войти</string>
 </resources>

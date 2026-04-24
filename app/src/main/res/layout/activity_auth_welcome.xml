@@ -48,7 +48,8 @@
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/welcomeSubtitleTextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:backgroundTint="@null"/>
 
     <Button
         android:id="@+id/registerButton"
@@ -62,6 +63,7 @@
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/loginButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:backgroundTint="@null"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

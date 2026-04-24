@@ -1,6 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/registerRoot"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/color_background_primary"
+    android:paddingHorizontal="28dp">
+
+    <TextView
+        android:id="@+id/registerTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="82dp"
+        android:text="@string/register_title"
+        android:textColor="@color/color_text_primary"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/nameEditText"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/shape_field_default"
+        android:hint="@string/hint_name"
+        android:inputType="textPersonName"
+        android:paddingHorizontal="20dp"
+        android:textColor="@color/color_text_primary"
+        android:textColorHint="@color/color_text_hint"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/registerTitleTextView" />
+
+    <EditText
+        android:id="@+id/registerEmailEditText"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/shape_field_default"
+        android:hint="@string/hint_email"
+        android:inputType="textEmailAddress"
+        android:paddingHorizontal="20dp"
+        android:textColor="@color/color_text_primary"
+        android:textColorHint="@color/color_text_hint"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nameEditText" />
+
+    <EditText
+        android:id="@+id/registerPasswordEditText"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/shape_field_default"
+        android:hint="@string/hint_password"
+        android:inputType="textPassword"
+        android:paddingHorizontal="20dp"
+        android:textColor="@color/color_text_primary"
+        android:textColorHint="@color/color_text_hint"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/registerEmailEditText" />
+
+    <EditText
+        android:id="@+id/repeatPasswordEditText"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/shape_field_default"
+        android:hint="@string/hint_repeat_password"
+        android:inputType="textPassword"
+        android:paddingHorizontal="20dp"
+        android:textColor="@color/color_text_primary"
+        android:textColorHint="@color/color_text_hint"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/registerPasswordEditText" />
+
+    <TextView
+        android:id="@+id/passwordRuleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/password_rule"
+        android:textColor="@color/auth_loginbtn_background"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/repeatPasswordEditText" />
+
+    <Button
+        android:id="@+id/registerSubmitButton"
+        android:layout_width="215dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/shape_button_primary"
+        android:text="@string/action_register"
+        android:textAllCaps="false"
+        android:textColor="@color/color_background_primary"
+        android:textSize="15sp"
+        app:backgroundTint="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/passwordRuleTextView" />
+
+    <Button
+        android:id="@+id/googleRegisterButton"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/shape_button_social"
+        app:backgroundTint="@null"
+        android:text="@string/action_register_google"
+        android:textAllCaps="false"
+        android:textColor="@color/auth_loginbtn_background"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/registerSubmitButton" />
+
+    <Button
+        android:id="@+id/vkRegisterButton"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/shape_button_social"
+        android:text="@string/action_register_vk"
+        app:backgroundTint="@null"
+        android:textAllCaps="false"
+        android:textColor="@color/auth_loginbtn_background"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/googleRegisterButton" />
+
+    <LinearLayout
+        android:id="@+id/loginLinkLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/vkRegisterButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/auth_has_account"
+            android:textColor="@color/color_text_secondary"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/goLoginTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/auth_go_login"
+            android:textColor="@color/color_text_secondary"
+            android:textStyle="bold"
+            android:textSize="14sp"/>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
