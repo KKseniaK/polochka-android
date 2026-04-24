@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Полочка</string>
+    <string name="app_slogan">Всё по полочкам</string>
+    <string name="login_button">Войти</string>
+</resources>
