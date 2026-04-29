@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/registrationSuccessRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_background_primary"
+    android:paddingHorizontal="@dimen/spacing_screen_horizontal">
+
+    <TextView
+        android:id="@+id/successTitleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/registration_success_title"
+        android:textColor="@color/color_text_primary"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/successSubtitleTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/successSubtitleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="@string/registration_success_subtitle"
+        android:textColor="@color/color_text_secondary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/successDescriptionTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/successTitleTextView" />
+
+    <TextView
+        android:id="@+id/successDescriptionTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:gravity="center"
+        android:lineSpacingExtra="3dp"
+        android:text="@string/registration_success_description"
+        android:textColor="@color/color_text_secondary"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@id/startSetupButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/successSubtitleTextView" />
+
+    <Button
+        android:id="@+id/startSetupButton"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size_button_height"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/shape_button_primary"
+        app:backgroundTint="@null"
+        android:text="@string/action_start_setup"
+        android:textAllCaps="false"
+        android:textColor="@color/color_background_primary"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@id/skipSetupButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/skipSetupButton"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/size_button_height"
+        android:layout_marginBottom="26dp"
+        android:background="@drawable/shape_button_secondary"
+        app:backgroundTint="@null"
+        android:text="@string/action_skip"
+        android:textAllCaps="false"
+        android:textColor="@color/color_background_primary"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

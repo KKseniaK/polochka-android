@@ -30,4 +30,10 @@
     <string name="dialog_login_ans">Зарегистрироваться</string>
     <string name="auth_has_account">Уже есть аккаунт?</string>
     <string name="auth_go_login">Войти</string>
+
+    <string name="registration_success_title">АККАУНТ СОЗДАН</string>
+    <string name="registration_success_subtitle">Теперь настроим Полочку под вас</string>
+    <string name="registration_success_description">Вы сможете выбрать предпочтения, продукты и настроить семью. Это поможет приложению давать более точные рекомендации.</string>
+    <string name="action_start_setup">Начать настройку</string>
+    <string name="action_skip">Пропустить</string>
 </resources>
