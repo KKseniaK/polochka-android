@@ -14,7 +14,7 @@ import com.hse.polochka.feature.onboarding.presentation.model.PreferenceChipUi
 import androidx.fragment.app.activityViewModels
 import com.hse.polochka.feature.onboarding.presentation.viewmodel.OnboardingViewModel
 
-class OnboardingCategoriesFragment : Fragment(R.layout.activity_onboarding_chip_selection) {
+class OnboardingCategoriesFragment : BaseOnboardingFragment(R.layout.activity_onboarding_chip_selection) {
 
     private val viewModel: OnboardingViewModel by activityViewModels()
     private var _binding: ActivityOnboardingChipSelectionBinding? = null
@@ -27,7 +27,16 @@ class OnboardingCategoriesFragment : Fragment(R.layout.activity_onboarding_chip_
 
         _binding = ActivityOnboardingChipSelectionBinding.bind(view)
 
-        binding.progressTextView.setText(R.string.onboarding_progress_1)
+        setupProgress(
+            step = 1,
+            stepViews = listOf(
+                binding.step1,
+                binding.step2,
+                binding.step3,
+                binding.step4
+            )
+        )
+
         binding.titleTextView.setText(R.string.onboarding_categories_title)
 
         chipAdapter = PreferenceChipAdapter(getCategoryChips())
@@ -42,33 +51,71 @@ class OnboardingCategoriesFragment : Fragment(R.layout.activity_onboarding_chip_
         binding.chipsRecyclerView.adapter = chipAdapter
 
         binding.nextButton.setOnClickListener {
-            val selectedCategoryIds = chipAdapter.getSelectedIds()
-            viewModel.saveSelectedCategories(selectedCategoryIds)
-
-            // дальше будет переход на экран любимых продуктов
+            viewModel.saveSelectedCategories(chipAdapter.getSelectedIds())
+            openFragment(OnboardingLikedProductsFragment())
         }
 
         binding.skipButton.setOnClickListener {
-            // позже переход на следующий шаг или Home
+            openFragment(OnboardingLikedProductsFragment())
         }
     }
 
     private fun getCategoryChips(): MutableList<PreferenceChipUi> {
         return mutableListOf(
-            PreferenceChipUi(1, R.string.pref_milk),
-            PreferenceChipUi(2, R.string.pref_sour_milk),
-            PreferenceChipUi(3, R.string.pref_cheese),
-            PreferenceChipUi(4, R.string.pref_meat),
-            PreferenceChipUi(5, R.string.pref_fish),
-            PreferenceChipUi(6, R.string.pref_poultry),
-            PreferenceChipUi(7, R.string.pref_seafood),
-            PreferenceChipUi(8, R.string.pref_vegetables),
-            PreferenceChipUi(9, R.string.pref_fruits),
-            PreferenceChipUi(10, R.string.pref_grains),
-            PreferenceChipUi(11, R.string.pref_bread),
-            PreferenceChipUi(12, R.string.pref_sweets),
-            PreferenceChipUi(13, R.string.pref_drinks)
+            PreferenceChipUi(
+                id = 1,
+                titleResId = R.string.pref_gluten_free,
+                iconResId = R.drawable.ic_glutenfree
+            ),
+            PreferenceChipUi(
+                id = 2,
+                titleResId = R.string.pref_lactose_free,
+                iconResId = R.drawable.ic_lactosefree
+            ),
+            PreferenceChipUi(
+                id = 3,
+                titleResId = R.string.pref_vegan,
+                iconResId = R.drawable.ic_vegan
+            ),
+            PreferenceChipUi(
+                id = 4,
+                titleResId = R.string.pref_vegetarian,
+                iconResId = R.drawable.ic_vegetarian
+            ),
+            PreferenceChipUi(
+                id = 5,
+                titleResId = R.string.pref_protein,
+                iconResId = R.drawable.ic_protein
+            ),
+            PreferenceChipUi(
+                id = 6,
+                titleResId = R.string.pref_diet,
+            ),
+            PreferenceChipUi(
+                id = 7,
+                titleResId = R.string.pref_fatty,
+            ),
+            PreferenceChipUi(
+                id = 8,
+                titleResId = R.string.pref_spicy,
+            ),
+            PreferenceChipUi(
+                id = 9,
+                titleResId = R.string.pref_sugar_free,
+            ),
+            PreferenceChipUi(
+                id = 10,
+                titleResId = R.string.pref_halal,
+                iconResId = R.drawable.ic_halal
+            )
         )
+    }
+
+    private fun openFragment(fragment: Fragment) {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun onDestroyView() {

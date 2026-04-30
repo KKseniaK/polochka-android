@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="OnboardingStep">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_height">15dp</item>
+        <item name="android:background">@drawable/bg_step_inactive</item>
+        <item name="android:layout_marginStart">7dp</item>
+        <item name="android:layout_marginEnd">7dp</item>
+    </style>
+</resources>

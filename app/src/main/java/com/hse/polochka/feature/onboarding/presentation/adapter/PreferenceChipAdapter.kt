@@ -3,6 +3,7 @@ package com.hse.polochka.feature.onboarding.presentation.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.hse.polochka.R
 import com.hse.polochka.databinding.ItemPreferenceChipBinding
@@ -39,19 +40,18 @@ class PreferenceChipAdapter(
 
             binding.chipTextView.setText(item.titleResId)
 
-            // состояние выбран/не выбран
-            binding.chipTextView.isSelected = item.isSelected
-
-            // цвет текста
-            val context = binding.root.context
-            val textColor = if (item.isSelected) {
-                ContextCompat.getColor(context, R.color.background_primary)
+            if (item.iconResId != null) {
+                binding.chipIconImageView.setImageResource(item.iconResId)
+                binding.chipIconImageView.visibility = View.VISIBLE
             } else {
-                ContextCompat.getColor(context, R.color.text_primary)
+                binding.chipIconImageView.visibility = View.GONE
             }
-            binding.chipTextView.setTextColor(textColor)
 
-            binding.chipTextView.setOnClickListener {
+            // состояние
+            binding.root.isSelected = item.isSelected
+
+            // клик
+            binding.root.setOnClickListener {
                 val position = bindingAdapterPosition
                 if (position == RecyclerView.NO_POSITION) return@setOnClickListener
 

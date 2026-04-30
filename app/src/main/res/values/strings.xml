@@ -42,12 +42,6 @@
     <string name="action_skip">Пропустить</string>
     <string name="onboarding_subtitle">*Вы можете добавить это позже в настройках аккаунта</string>
 
-    <!-- Прогресс -->
-    <string name="onboarding_progress_1">1 / 4</string>
-    <string name="onboarding_progress_2">2 / 4</string>
-    <string name="onboarding_progress_3">3 / 4</string>
-    <string name="onboarding_progress_4">4 / 4</string>
-
     <!-- Шаг 1: категории -->
     <string name="onboarding_categories_title">
         Выберите подходящие вам категории
@@ -60,9 +54,8 @@
 
     <!-- Шаг 3: нелюбимые продукты -->
     <string name="onboarding_disliked_title">
-        Выберите продукты, которые вы не любите
+        Выберите продукты, которые вы <font color="#93A2E6">не любите</font>
     </string>
-
     <!-- Шаг 4: семья -->
     <string name="onboarding_family_title">
         Добавьте членов семьи
@@ -73,6 +66,17 @@
     </string>
 
     <!-- Категории (чипы) -->
+    <string name="pref_gluten_free">без глютена</string>
+    <string name="pref_lactose_free">без лактозы</string>
+    <string name="pref_vegan">веганское</string>
+    <string name="pref_vegetarian">вегетарианское</string>
+    <string name="pref_protein">белковое</string>
+    <string name="pref_diet">диетическое</string>
+    <string name="pref_fatty">жирное</string>
+    <string name="pref_spicy">неострое</string>
+    <string name="pref_sugar_free">без сахара</string>
+    <string name="pref_halal">халяль</string>
+
     <string name="pref_milk">молочное</string>
     <string name="pref_sour_milk">кисломолочное</string>
     <string name="pref_cheese">сыры</string>
@@ -80,10 +84,30 @@
     <string name="pref_fish">рыба</string>
     <string name="pref_poultry">птица</string>
     <string name="pref_seafood">морепродукты</string>
+    <string name="pref_sausage">колбасное</string>
     <string name="pref_vegetables">овощи</string>
     <string name="pref_fruits">фрукты</string>
+    <string name="pref_greens">зелень</string>
+    <string name="pref_berries">ягоды</string>
+    <string name="pref_mushrooms">грибы</string>
+    <string name="pref_bakery">выпечка</string>
+    <string name="pref_pasta">макароны</string>
     <string name="pref_grains">крупы</string>
-    <string name="pref_bread">хлеб</string>
-    <string name="pref_sweets">сладости</string>
-    <string name="pref_drinks">напитки</string>
+    <string name="pref_coffee">кофе</string>
+    <string name="pref_tea">чай</string>
+    <string name="pref_sweet">сладкое</string>
+    <string name="pref_salty">солёное</string>
+    <string name="pref_hot">острое</string>
+
+    <string name="onboarding_invite">Пригласить участников</string>
+    <string name="default_user_name">Вася Пупкин</string>
+    <string name="action_done">Готово</string>
+    <string name="content_description_profile_photo">Фото профиля</string>
+    <string name="toast_invite_family_soon">Приглашение семьи добавим позже</string>
+    <string name="toast_onboarding_saved">Настройки сохранены</string>
+    <string name="toast_onboarding_skipped">Настройка пропущена</string>
+    <string name="error_empty_name">Введите имя</string>
+
+    <string name="hint_email_new_member">Почта нового участника</string>
+    <string name="content_description_confirm">Подтвердить приглашение</string>
 </resources>

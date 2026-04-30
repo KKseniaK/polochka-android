@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/onboardingChipSelectionRoot"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/onboardingFamilyRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_primary"
@@ -43,6 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:gravity="center"
+        android:text="@string/onboarding_family_title"
         android:textAllCaps="true"
         android:textColor="@color/text_primary"
         android:textSize="25sp"
@@ -57,41 +58,98 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:gravity="center"
-        android:text="@string/onboarding_subtitle"
+        android:text="@string/onboarding_family_subtitle"
         android:textColor="@color/text_hint"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chipsRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="18dp"
-        android:layout_marginBottom="24dp"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        app:layout_constraintBottom_toTopOf="@id/nextButton"
+    <ImageView
+        android:id="@+id/avatarImageView"
+        android:layout_width="104dp"
+        android:layout_height="104dp"
+        android:layout_marginTop="32dp"
+        android:contentDescription="@string/content_description_profile_photo"
+        android:padding="24dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_profile_placeholder"
+        android:background="@drawable/shape_button_secondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/subtitleTextView" />
 
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/text_primary"
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/avatarImageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Имя пользователя" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_dashed_line"
+        app:layout_constraintTop_toBottomOf="@id/nameTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/inviteTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/onboarding_invite"
+        android:textColor="@color/button_primary"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider" />
+
+    <FrameLayout
+        android:id="@+id/addMemberButton"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/shape_add_member"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inviteTextView">
+
+        <ImageView
+            android:id="@+id/addMemberIcon"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_plus_member"
+            />
+
+    </FrameLayout>
+
     <Button
-        android:id="@+id/nextButton"
+        android:id="@+id/doneButton"
         android:layout_width="0dp"
         android:layout_height="@dimen/size_button_height"
         android:layout_marginHorizontal="42dp"
         android:layout_marginBottom="12dp"
         android:background="@drawable/shape_button_primary"
-        android:text="@string/action_next"
+        app:backgroundTint="@null"
+        android:text="@string/action_done"
         android:textAllCaps="false"
         android:textColor="@color/background_primary"
         android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@id/skipButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:backgroundTint="@null"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/skipButton"
