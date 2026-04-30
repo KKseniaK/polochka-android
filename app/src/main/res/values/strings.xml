@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Полочка</string>
 
-    <string name="welcome_title">ПОЛОЧКА</string>
+    <string name="welcome_title">Полочка</string>
     <string name="welcome_subtitle">Храни важное рядом</string>
 
     <string name="action_login">Войти</string>
@@ -12,9 +12,9 @@
     <string name="action_back_to_reg">Назад ко входу</string>
 
 
-    <string name="login_title">ВОЙТИ В АККАУНТ</string>
-    <string name="register_title">СОЗДАТЬ АККАУНТ</string>
-    <string name="recover_title">ВОССТАНОВЛЕНИЕ ДОСТУПА</string>
+    <string name="login_title">Войти в аккаунт</string>
+    <string name="register_title">Создать аккаунт</string>
+    <string name="recover_title">Восстановление доступа</string>
 
     <string name="hint_email">Email</string>
     <string name="hint_password">Пароль</string>
@@ -35,5 +35,55 @@
     <string name="registration_success_subtitle">Теперь настроим Полочку под вас</string>
     <string name="registration_success_description">Вы сможете выбрать предпочтения, продукты и настроить семью. Это поможет приложению давать более точные рекомендации.</string>
     <string name="action_start_setup">Начать настройку</string>
+
+
+    <!-- Общие -->
+    <string name="action_next">Далее</string>
     <string name="action_skip">Пропустить</string>
+    <string name="onboarding_subtitle">*Вы можете добавить это позже в настройках аккаунта</string>
+
+    <!-- Прогресс -->
+    <string name="onboarding_progress_1">1 / 4</string>
+    <string name="onboarding_progress_2">2 / 4</string>
+    <string name="onboarding_progress_3">3 / 4</string>
+    <string name="onboarding_progress_4">4 / 4</string>
+
+    <!-- Шаг 1: категории -->
+    <string name="onboarding_categories_title">
+        Выберите подходящие вам категории
+    </string>
+
+    <!-- Шаг 2: любимые продукты -->
+    <string name="onboarding_liked_title">
+        Выберите продукты, которые вы любите
+    </string>
+
+    <!-- Шаг 3: нелюбимые продукты -->
+    <string name="onboarding_disliked_title">
+        Выберите продукты, которые вы не любите
+    </string>
+
+    <!-- Шаг 4: семья -->
+    <string name="onboarding_family_title">
+        Добавьте членов семьи
+    </string>
+
+    <string name="onboarding_family_subtitle">
+        Вы можете пригласить близких и вести список продуктов вместе
+    </string>
+
+    <!-- Категории (чипы) -->
+    <string name="pref_milk">молочное</string>
+    <string name="pref_sour_milk">кисломолочное</string>
+    <string name="pref_cheese">сыры</string>
+    <string name="pref_meat">мясо</string>
+    <string name="pref_fish">рыба</string>
+    <string name="pref_poultry">птица</string>
+    <string name="pref_seafood">морепродукты</string>
+    <string name="pref_vegetables">овощи</string>
+    <string name="pref_fruits">фрукты</string>
+    <string name="pref_grains">крупы</string>
+    <string name="pref_bread">хлеб</string>
+    <string name="pref_sweets">сладости</string>
+    <string name="pref_drinks">напитки</string>
 </resources>

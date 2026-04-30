@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.hse.polochka.R
 import com.hse.polochka.databinding.ActivityRegistrationSuccessBinding
+import com.hse.polochka.feature.onboarding.presentation.screen.OnboardingCategoriesFragment
 
 class RegistrationSuccessFragment : Fragment(R.layout.activity_registration_success) {
 
@@ -16,7 +17,10 @@ class RegistrationSuccessFragment : Fragment(R.layout.activity_registration_succ
         super.onViewCreated(view, savedInstanceState)
 
         binding.startSetupButton.setOnClickListener {
-            // дальше откроем экран выбора категорий
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, OnboardingCategoriesFragment())
+                .addToBackStack(null)
+                .commit()
         }
 
         binding.skipSetupButton.setOnClickListener {

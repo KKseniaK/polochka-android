@@ -55,4 +55,5 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
 
     implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
 }

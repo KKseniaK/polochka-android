@@ -17,6 +17,10 @@ class RegisterFragment : Fragment(R.layout.activity_auth_register) {
         binding.goLoginTextView.setOnClickListener {
             openFragment(LoginFragment())
         }
+
+        binding.registerSubmitButton.setOnClickListener {
+            openFragment(RegistrationSuccessFragment())
+        }
     }
 
     private fun openFragment(fragment: Fragment) {
