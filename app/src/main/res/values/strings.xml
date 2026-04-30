@@ -110,4 +110,14 @@
 
     <string name="hint_email_new_member">Почта нового участника</string>
     <string name="content_description_confirm">Подтвердить приглашение</string>
+
+    <!-- главный хаб -->
+    <string name="home_title">Это пока вместо хаба</string>
+
+    <!-- менюшка -->
+    <string name="menu_storage">Запасы</string>
+    <string name="menu_shopping">Покупки</string>
+    <string name="menu_home">Главная</string>
+    <string name="menu_recipes">Рецепты</string>
+    <string name="menu_profile">Профиль</string>
 </resources>

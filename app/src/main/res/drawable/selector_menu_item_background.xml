@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- выбранный -->
+    <item android:state_selected="true">
+        <shape>
+            <solid android:color="@android:color/transparent"/>
+            <stroke
+                android:width="3dp"
+                android:color="@color/button_primary"/>
+            <corners android:radius="90dp"/>
+        </shape>
+    </item>
+
+    <!-- обычный -->
+    <item>
+        <shape>
+            <solid android:color="@android:color/transparent"/>
+            <corners android:radius="24dp"/>
+        </shape>
+    </item>
+
+</selector>

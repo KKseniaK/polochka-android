@@ -7,8 +7,10 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.hse.polochka.MainActivity
 import com.hse.polochka.R
 import com.hse.polochka.databinding.ActivityOnboardingFamilyBinding
+import com.hse.polochka.feature.home.presentation.screen.HomeFragment
 import com.hse.polochka.feature.onboarding.presentation.viewmodel.OnboardingViewModel
 
 class OnboardingFamilyFragment : BaseOnboardingFragment(R.layout.activity_onboarding_family) {
@@ -72,7 +74,7 @@ class OnboardingFamilyFragment : BaseOnboardingFragment(R.layout.activity_onboar
                 Toast.LENGTH_SHORT
             ).show()
 
-            // TODO: перейти на HomeFragment
+            openHome()
         }
 
         binding.skipButton.setOnClickListener {
@@ -82,12 +84,18 @@ class OnboardingFamilyFragment : BaseOnboardingFragment(R.layout.activity_onboar
                 Toast.LENGTH_SHORT
             ).show()
 
-            // TODO: перейти на HomeFragment
+            openHome()
         }
 
     }
 
+    private fun openHome() {
+        (requireActivity() as MainActivity).showBottomMenu()
 
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, HomeFragment())
+            .commit()
+    }
 
     override fun onDestroyView() {
         _binding = null
