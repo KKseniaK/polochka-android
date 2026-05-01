@@ -133,4 +133,28 @@
     <string name="hint_product_category">Категория (опционально)</string>
     <string name="hint_product_expiration">Срок годности</string>
     <string name="storage_dialog_save">Сохранить!</string>
+
+    <!-- статистика -->
+    <string name="analytics_title">Статистика</string>
+    <string name="analytics_month">Месяц: %1$s</string>
+    <string name="analytics_bought_label">БЫЛО КУПЛЕНО:</string>
+    <string name="analytics_bought_value_default">0 продуктов</string>
+    <string name="analytics_saved_money_label">ВЫ СЭКОНОМИЛИ:</string>
+    <string name="analytics_saved_money_default">0 руб.</string>
+    <string name="analytics_saved_note">*на основе спасенных продуктов</string>
+
+    <string name="analytics_mode_percent">%</string>
+    <string name="analytics_mode_count">шт.</string>
+
+    <string name="analytics_used">тут будет диаграмма</string>
+
+    <string name="analytics_milk">Молоко</string>
+    <string name="analytics_often_bought">чаще всего\nпокупали</string>
+    <string name="analytics_spicy">Острое</string>
+    <string name="analytics_favorite_category">ваша любимая\nкатегория</string>
+    <string name="analytics_family_favorite_category">любимая\nкатегория семьи</string>
+    <string name="analytics_often_spoiled">чаще всего\nпортилось</string>
+
+    <string name="analytics_champion_name_default">Папа</string>
+    <string name="analytics_champion_description">чемпион по покупкам в вашей семье</string>
 </resources>

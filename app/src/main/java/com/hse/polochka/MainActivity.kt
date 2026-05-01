@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.hse.polochka.databinding.ActivityMainBinding
+import com.hse.polochka.feature.analytics.presentation.screen.AnalyticsFragment
 import com.hse.polochka.feature.auth.presentation.screen.WelcomeFragment
 import com.hse.polochka.feature.home.presentation.screen.HomeFragment
 import com.hse.polochka.feature.storage.presentation.screen.StorageFragment
@@ -49,6 +50,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomMenu.profileMenuButton.setOnClickListener {
             selectBottomMenuItem(binding.bottomMenu.profileMenuButton)
+            openFragment(AnalyticsFragment())
         }
     }
 
