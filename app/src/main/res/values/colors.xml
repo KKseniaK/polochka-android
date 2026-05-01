@@ -20,4 +20,12 @@
     <color name="field_background">#E8E8E8</color>
     <color name="field_texthint">#AEAEAC</color>
 
+    <!-- Хранилище -->
+    <color name="storage_expired">#2B1714</color>
+    <color name="storage_last_day">#F95432</color>
+    <color name="storage_middle">#E2B8E3</color>
+    <color name="storage_fresh">#E8FF8A</color>
+    <color name="storage_image_background">#E4FF6A</color>
+    <color name="storage_dialog_field">#C4DE4F</color>
+
 </resources>

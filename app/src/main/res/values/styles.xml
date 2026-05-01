@@ -7,4 +7,14 @@
         <item name="android:layout_marginStart">7dp</item>
         <item name="android:layout_marginEnd">7dp</item>
     </style>
+
+    <style name="StorageTagStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">28dp</item>
+        <item name="android:background">@drawable/shape_storage_tag</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingHorizontal">14dp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 </resources>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/bg_product_details"
+    android:padding="24dp">
+
+    <ImageView
+        android:id="@+id/closeButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_close"
+        app:tint="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/productImageView"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_product_circle"
+        android:padding="16dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintTop_toBottomOf="@id/closeButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:src="@drawable/ic_milk"/>
+
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/text_primary"
+        android:textSize="36sp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/productImageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Йогурт Epica"/>
+
+    <TextView
+        android:id="@+id/amountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="26sp"
+        android:textColor="@color/text_primary"
+        app:layout_constraintTop_toBottomOf="@id/nameTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="5 шт."/>
+
+    <TextView
+        android:id="@+id/dateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textSize="18sp"
+        android:textColor="@color/text_primary"
+        app:layout_constraintTop_toBottomOf="@id/amountTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="годен до: 12.03.26 (завтра)"/>
+
+    <LinearLayout
+        android:id="@+id/tagsContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/dateTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            style="@style/StorageTagStyle"
+            tools:text="молочка" />
+
+        <TextView
+            style="@style/StorageTagStyle"
+            android:layout_marginTop="8dp"
+            tools:text="быстро портящийся"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/deleteButton"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="42dp"
+        android:background="@drawable/bg_action_button"
+        android:padding="16dp"
+        android:layout_marginEnd="8dp"
+        android:src="@drawable/ic_trash"
+        app:layout_constraintTop_toBottomOf="@id/tagsContainer"
+        app:layout_constraintEnd_toStartOf="@id/editButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"/>
+
+    <ImageView
+        android:id="@+id/editButton"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="42dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/bg_action_button"
+        android:padding="16dp"
+        android:src="@drawable/ic_pencil"
+        app:layout_constraintTop_toBottomOf="@id/tagsContainer"
+        app:layout_constraintStart_toEndOf="@id/deleteButton"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

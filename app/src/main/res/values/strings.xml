@@ -120,4 +120,17 @@
     <string name="menu_home">Главная</string>
     <string name="menu_recipes">Рецепты</string>
     <string name="menu_profile">Профиль</string>
+
+    <!-- хранилище -->
+    <string name="storage_title">Ваши продукты</string>
+    <string name="storage_search_hint">Что вы хотите найти?</string>
+    <string name="content_description_filter">Фильтр</string>
+    <string name="content_description_add_product">Добавить продукт</string>
+    <string name="storage_add_product_soon">скоро тут будет функция добавления</string>
+    <string name="storage_filter_soon">фильтр тоже будет работать</string>
+
+    <string name="hint_product_name">Название</string>
+    <string name="hint_product_category">Категория (опционально)</string>
+    <string name="hint_product_expiration">Срок годности</string>
+    <string name="storage_dialog_save">Сохранить!</string>
 </resources>

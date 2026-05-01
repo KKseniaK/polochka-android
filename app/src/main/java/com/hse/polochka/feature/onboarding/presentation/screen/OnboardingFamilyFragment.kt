@@ -90,11 +90,7 @@ class OnboardingFamilyFragment : BaseOnboardingFragment(R.layout.activity_onboar
     }
 
     private fun openHome() {
-        (requireActivity() as MainActivity).showBottomMenu()
-
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, HomeFragment())
-            .commit()
+        (requireActivity() as MainActivity).openHome()
     }
 
     override fun onDestroyView() {

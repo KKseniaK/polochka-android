@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.hse.polochka.databinding.ActivityMainBinding
 import com.hse.polochka.feature.auth.presentation.screen.WelcomeFragment
 import com.hse.polochka.feature.home.presentation.screen.HomeFragment
+import com.hse.polochka.feature.storage.presentation.screen.StorageFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,9 +27,6 @@ class MainActivity : AppCompatActivity() {
         setupBottomMenu()
     }
 
-    // -------------------------------
-    // НАСТРОЙКА МЕНЮ
-    // -------------------------------
     private fun setupBottomMenu() {
 
         binding.bottomMenu.homeMenuButton.setOnClickListener {
@@ -38,23 +36,26 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomMenu.storageMenuButton.setOnClickListener {
             selectBottomMenuItem(binding.bottomMenu.storageMenuButton)
-            // TODO: StorageFragment()
+            openFragment(StorageFragment())
         }
 
         binding.bottomMenu.shoppingMenuButton.setOnClickListener {
             selectBottomMenuItem(binding.bottomMenu.shoppingMenuButton)
-            // TODO: ShoppingFragment()
         }
 
         binding.bottomMenu.recipesMenuButton.setOnClickListener {
             selectBottomMenuItem(binding.bottomMenu.recipesMenuButton)
-            // TODO: RecipesFragment()
         }
 
         binding.bottomMenu.profileMenuButton.setOnClickListener {
             selectBottomMenuItem(binding.bottomMenu.profileMenuButton)
-            // TODO: ProfileFragment()
         }
+    }
+
+    fun openHome() {
+        showBottomMenu()
+        selectBottomMenuItem(binding.bottomMenu.homeMenuButton)
+        openFragment(HomeFragment())
     }
 
     // -------------------------------
