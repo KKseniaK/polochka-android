@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="96dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/bg_family_member_card"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/memberAvatarImageView"
+        android:layout_width="78dp"
+        android:layout_height="78dp"
+        android:background="@drawable/bg_avatar_placeholder"
+        android:padding="15dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_profile_placeholder"
+        android:contentDescription="@string/content_description_profile_photo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/memberNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:textColor="@color/text_primary"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="@id/memberAvatarImageView"
+        app:layout_constraintStart_toEndOf="@id/memberAvatarImageView"
+        app:layout_constraintEnd_toStartOf="@id/removeMemberButton"
+        tools:text="Папа" />
+
+    <TextView
+        android:id="@+id/memberEmailTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_primary"
+        android:textSize="17sp"
+        app:layout_constraintTop_toBottomOf="@id/memberNameTextView"
+        app:layout_constraintStart_toStartOf="@id/memberNameTextView"
+        app:layout_constraintEnd_toEndOf="@id/memberNameTextView"
+        tools:text="papa******@gmail.com" />
+
+    <TextView
+        android:id="@+id/memberRoleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/profile_member_role"
+        android:textColor="@color/text_primary"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/memberEmailTextView"
+        app:layout_constraintStart_toStartOf="@id/memberNameTextView"
+        app:layout_constraintEnd_toEndOf="@id/memberNameTextView" />
+
+    <ImageView
+        android:id="@+id/removeMemberButton"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:src="@drawable/ic_close"
+        app:tint="@color/button_primary"
+        android:contentDescription="@string/content_description_remove_member"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
