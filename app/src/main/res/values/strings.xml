@@ -169,4 +169,10 @@
 
     <string name="profile_member_role">участник</string>
     <string name="content_description_settings">пупупу удалить потом</string>
+
+    <!-- список -->
+    <string name="shopping_list_title">Список покупок:</string>
+    <string name="shopping_add_product_hint">Добавить продукт</string>
+    <string name="shopping_history_title">История покупок</string>
+    <string name="shopping_no_family_lists">Семейных списков пока нет</string>
 </resources>

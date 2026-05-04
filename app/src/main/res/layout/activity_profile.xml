@@ -208,23 +208,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-        <include
-            layout="@layout/item_family_member"
-            tools:layout_width="match_parent"
-            tools:layout_height="96dp"
-            />
-
-        <include
-            layout="@layout/item_family_member"
-            tools:layout_width="match_parent"
-            android:layout_marginTop="12dp"
-            tools:layout_height="96dp" />
-            <include
-                layout="@layout/item_family_member"
-                tools:layout_width="match_parent"
-                android:layout_marginTop="12dp"
-                tools:layout_height="96dp" />
-
         </LinearLayout>
 
         <FrameLayout
