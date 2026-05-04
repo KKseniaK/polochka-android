@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_primary"
+    android:clipToPadding="false"
+    android:paddingBottom="120dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/spacing_screen_horizontal"
+        android:paddingTop="42dp">
+
+        <TextView
+            android:id="@+id/recipesTitleTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/recipes_title"
+            android:textColor="@color/text_primary"
+            android:textSize="36sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/addRecipeButton" />
+
+        <ImageView
+            android:id="@+id/addRecipeButton"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/ic_plus_member"
+            app:tint="@color/button_primary"
+            android:background="@drawable/selector_menu_item_background"
+            android:contentDescription="@string/content_description_add_recipe"
+            app:layout_constraintTop_toTopOf="@id/recipesTitleTextView"
+            app:layout_constraintBottom_toBottomOf="@id/recipesTitleTextView"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <EditText
+            android:id="@+id/searchEditText"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/shape_button_primary"
+            android:drawableStart="@drawable/ic_search"
+            android:drawablePadding="8dp"
+            android:hint="@string/recipes_search_hint"
+            android:paddingHorizontal="14dp"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/background_primary"
+            android:textSize="13sp"
+            app:layout_constraintTop_toBottomOf="@id/recipesTitleTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/favoritesButton" />
+
+        <ImageView
+            android:id="@+id/favoritesButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="12dp"
+            android:src="@drawable/ic_heart_filled"
+            android:contentDescription="@string/content_description_favorites"
+            app:layout_constraintTop_toTopOf="@id/searchEditText"
+            app:layout_constraintBottom_toBottomOf="@id/searchEditText"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/tagsRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:clipToPadding="false"
+            app:layout_constraintTop_toBottomOf="@id/searchEditText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:listitem="@layout/item_recipe_tag"
+            tools:itemCount="6" />
+
+        <View
+            android:id="@+id/topDivider"
+            android:layout_width="0dp"
+            android:layout_height="3dp"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/bg_dashed_line"
+            app:layout_constraintTop_toBottomOf="@id/tagsRecyclerView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/canCookTitleTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="@string/recipes_can_cook_title"
+            android:textAllCaps="true"
+            android:textColor="@color/text_primary"
+            android:textSize="24sp"
+            app:layout_constraintTop_toBottomOf="@id/topDivider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/canCookRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:nestedScrollingEnabled="false"
+            android:clipToPadding="false"
+            android:paddingEnd="8dp"
+            app:layout_constraintTop_toBottomOf="@id/canCookTitleTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:listitem="@layout/item_recipe_card"
+            tools:itemCount="6" />
+
+        <Button
+            android:id="@+id/showAllButton"
+            android:layout_width="180dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/shape_button_primary"
+            app:backgroundTint="@null"
+            android:text="@string/action_show_all"
+            android:textAllCaps="false"
+            android:textColor="@color/background_primary"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@id/canCookRecyclerView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <View
+            android:id="@+id/middleDivider"
+            android:layout_width="0dp"
+            android:layout_height="3dp"
+            android:layout_marginTop="22dp"
+            android:background="@drawable/bg_dashed_line"
+            app:layout_constraintTop_toBottomOf="@id/showAllButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/popularTitleTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:text="@string/recipes_popular_title"
+            android:textAllCaps="true"
+            android:textColor="@color/text_primary"
+            android:textSize="24sp"
+            app:layout_constraintTop_toBottomOf="@id/middleDivider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/popularRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:nestedScrollingEnabled="false"
+            app:layout_constraintTop_toBottomOf="@id/popularTitleTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:listitem="@layout/item_recipe_card"
+            tools:itemCount="2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

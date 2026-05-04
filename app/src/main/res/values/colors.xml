@@ -30,4 +30,7 @@
 
     <color name="shopping_members_list">#E2B8E3</color>
 
+    <color name="recipe_step_active">#E2B8E3</color>
+    <color name="recipe_step_inactive">#D9D9D9</color>
+
 </resources>

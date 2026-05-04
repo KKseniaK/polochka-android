@@ -175,4 +175,26 @@
     <string name="shopping_add_product_hint">Добавить продукт</string>
     <string name="shopping_history_title">История покупок</string>
     <string name="shopping_no_family_lists">Семейных списков пока нет</string>
+
+    <!-- реецепты -->
+    <string name="recipes_title">Рецепты</string>
+    <string name="recipes_search_hint">что вы хотите найти?</string>
+    <string name="recipes_can_cook_title">Вы можете приготовить!</string>
+    <string name="recipes_popular_title">Популярное</string>
+    <string name="action_show_all">смотреть все</string>
+    <string name="content_description_add_recipe">Добавить рецепт</string>
+    <string name="content_description_favorites">Избранные рецепты</string>
+
+
+    <string name="recipe_rate">ОЦЕНИТЕ РЕЦЕПТ</string>
+    <string name="comment">Комментарий</string>
+
+    <string name="content_description_bad_rating">Плохая оценка</string>
+    <string name="content_description_neutral_rating">Нейтральная оценка</string>
+    <string name="content_description_good_rating">Хорошая оценка</string>
+
+    <string name="recipe_portions_label">КОЛ-ВО ПОРЦИЙ</string>
+    <string name="action_add_to_shopping_list">Добавить в список покупок</string>
+    <string name="recipe_missing_ingredients">У вас не хватает %1$d ингредиентов</string>
+    <string name="recipe_ingredients_title">Кол-во порций</string>
 </resources>

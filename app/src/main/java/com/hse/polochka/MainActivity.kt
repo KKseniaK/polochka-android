@@ -7,6 +7,7 @@ import com.hse.polochka.databinding.ActivityMainBinding
 import com.hse.polochka.feature.analytics.presentation.screen.AnalyticsFragment
 import com.hse.polochka.feature.auth.presentation.screen.WelcomeFragment
 import com.hse.polochka.feature.home.presentation.screen.HomeFragment
+import com.hse.polochka.feature.recipes.presentation.screen.RecipesFragment
 import com.hse.polochka.feature.shopping.presentation.screen.ShoppingFragment
 import com.hse.polochka.feature.storage.presentation.screen.StorageFragment
 
@@ -48,6 +49,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomMenu.recipesMenuButton.setOnClickListener {
             selectBottomMenuItem(binding.bottomMenu.recipesMenuButton)
+            openFragment(RecipesFragment())
         }
 
         binding.bottomMenu.profileMenuButton.setOnClickListener {
