@@ -111,9 +111,6 @@
     <string name="hint_email_new_member">Почта нового участника</string>
     <string name="content_description_confirm">Подтвердить приглашение</string>
 
-    <!-- главный хаб -->
-    <string name="home_title">Это пока вместо хаба</string>
-
     <!-- менюшка -->
     <string name="menu_storage">Запасы</string>
     <string name="menu_shopping">Покупки</string>
@@ -197,4 +194,14 @@
     <string name="action_add_to_shopping_list">Добавить в список покупок</string>
     <string name="recipe_missing_ingredients">У вас не хватает %1$d ингредиентов</string>
     <string name="recipe_ingredients_title">Кол-во порций</string>
+
+    <!-- главный хаб -->
+    <string name="home_title">Семья VASYAPUP</string>
+    <string name="home_expiring_title">Скоро пропадут\n10 продуктов!</string>
+    <string name="home_recipes_title">Приготовить:</string>
+
+    <string name="home_month_stats_title">В этом месяце вы:</string>
+    <string name="home_saved_products">Спасли</string>
+    <string name="home_products_suffix">продуктов</string>
+    <string name="home_saved_money">Сэкономили</string>
 </resources>
