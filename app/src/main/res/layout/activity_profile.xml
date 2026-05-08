@@ -102,6 +102,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/profileHeaderBottomBarrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="emailTextView,emailEditText" />
+
         <Button
             android:id="@+id/logoutButton"
             android:layout_width="0dp"
@@ -115,7 +122,7 @@
             android:textAllCaps="false"
             android:textColor="@color/storage_last_day"
             android:textSize="20sp"
-            app:layout_constraintTop_toBottomOf="@id/emailTextView"
+            app:layout_constraintTop_toBottomOf="@id/profileHeaderBottomBarrier"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

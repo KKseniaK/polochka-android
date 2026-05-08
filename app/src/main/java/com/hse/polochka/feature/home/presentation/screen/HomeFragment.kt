@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hse.polochka.R
+import com.hse.polochka.core.family.FamilyStorage
 import com.hse.polochka.core.preferences.PreferencesStorage
 import com.hse.polochka.databinding.ActivityHomeBinding
 import com.hse.polochka.feature.home.presentation.adapter.HomeExpiringProductsAdapter
@@ -24,6 +25,7 @@ class HomeFragment : Fragment(R.layout.activity_home) {
     private val binding get() = requireNotNull(_binding)
 
     private lateinit var preferencesStorage: PreferencesStorage
+    private lateinit var familyStorage: FamilyStorage
     private lateinit var recipeRepository: RecipeRepository
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -31,6 +33,7 @@ class HomeFragment : Fragment(R.layout.activity_home) {
 
         _binding = ActivityHomeBinding.bind(view)
         preferencesStorage = PreferencesStorage(requireContext())
+        familyStorage = FamilyStorage(requireContext())
         recipeRepository = RecipeRepository(requireContext())
 
         setupClicks()
@@ -53,31 +56,23 @@ class HomeFragment : Fragment(R.layout.activity_home) {
         binding.familyRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
+        val members = familyStorage.getMembers()
         binding.familyRecyclerView.adapter =
             HomeFamilyAdapter(
-                items = listOf(
+                items = members.mapIndexed { index, member ->
                     HomeFamilyMemberUi(
-                        id = 1,
-                        name = "Папа",
-                        message = "купите туалетную бумагу пж",
-                        avatarResId = R.drawable.ic_profile_placeholder
-                    ),
-                    HomeFamilyMemberUi(
-                        id = 2,
-                        name = "Сестра",
-                        message = null,
-                        avatarResId = R.drawable.ic_profile_placeholder
-                    ),
-                    HomeFamilyMemberUi(
-                        id = 3,
-                        name = "Мама",
-                        message = "хочу приготовить щи",
+                        id = index + 1,
+                        name = member.name,
+                        message = if (member.status == "invited") "ожидает приглашение" else null,
                         avatarResId = R.drawable.ic_profile_placeholder
                     )
-                ),
+                },
                 onAddClick = {
-                    InviteMemberDialogFragment()
-                        .show(parentFragmentManager, "invite_member")
+                    InviteMemberDialogFragment().apply {
+                        onInvitationCreated = {
+                            setupFamilyBlock()
+                        }
+                    }.show(parentFragmentManager, "invite_member")
                 }
             )
     }

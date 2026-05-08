@@ -178,6 +178,15 @@
     <string name="profile_restricted_tags_title">Не люблю / ограничения</string>
     <string name="profile_family_title">Семья VASYAPUP</string>
     <string name="profile_admin_label">Вы администратор!</string>
+    <string name="profile_family_owner">владелец</string>
+    <string name="profile_family_member">участник</string>
+    <string name="profile_family_invited">приглашение отправлено</string>
+    <string name="profile_cannot_remove_self">Себя из семьи удалить нельзя</string>
+    <string name="profile_member_removed">Участник удален</string>
+    <string name="invite_error_empty_email">Введите email</string>
+    <string name="invite_email_subject">Приглашение в Polochka</string>
+    <string name="invite_email_body">Привет! Я приглашаю тебя в свою семью в Polochka. Перейди по ссылке: %1$s</string>
+    <string name="invite_created">Приглашение подготовлено</string>
     <string name="content_description_back">Назад</string>
     <string name="content_description_edit_profile">Редактировать профиль</string>
     <string name="content_description_remove_member">Удалить участника</string>

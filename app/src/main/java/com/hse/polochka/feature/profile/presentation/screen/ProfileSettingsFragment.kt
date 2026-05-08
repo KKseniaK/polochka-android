@@ -3,12 +3,15 @@ package com.hse.polochka.feature.profile.presentation.screen
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.hse.polochka.R
+import com.hse.polochka.core.family.FamilyMember
+import com.hse.polochka.core.family.FamilyStorage
 import com.hse.polochka.core.preferences.PreferencesStorage
 import com.hse.polochka.databinding.ActivityProfileBinding
 import com.hse.polochka.feature.onboarding.presentation.adapter.PreferenceChipAdapter
@@ -23,8 +26,8 @@ class ProfileSettingsFragment : Fragment(R.layout.activity_profile) {
     private lateinit var likedPreferencesAdapter: PreferenceChipAdapter
     private lateinit var restrictedPreferencesAdapter: PreferenceChipAdapter
     private lateinit var preferencesStorage: PreferencesStorage
+    private lateinit var familyStorage: FamilyStorage
     private var preferencesExpanded = false
-
     private var isEditMode = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -32,18 +35,20 @@ class ProfileSettingsFragment : Fragment(R.layout.activity_profile) {
 
         _binding = ActivityProfileBinding.bind(view)
         preferencesStorage = PreferencesStorage(requireContext())
+        familyStorage = FamilyStorage(requireContext())
 
-        setMockProfile()
+        bindProfile()
         setupPreferences()
-        setMockFamily()
+        bindFamily()
         setupClicks()
     }
 
-    private fun setMockProfile() {
-        binding.nameTextView.text = getString(R.string.default_user_name)
-        binding.emailTextView.text = "test@polochka.local"
-        binding.nameEditText.setText(binding.nameTextView.text)
-        binding.emailEditText.setText(binding.emailTextView.text)
+    private fun bindProfile() {
+        val currentUser = familyStorage.getMembers().first { it.isCurrentUser }
+        binding.nameTextView.text = currentUser.name
+        binding.emailTextView.text = currentUser.email
+        binding.nameEditText.setText(currentUser.name)
+        binding.emailEditText.setText(currentUser.email)
     }
 
     private fun setupClicks() {
@@ -56,8 +61,11 @@ class ProfileSettingsFragment : Fragment(R.layout.activity_profile) {
         }
 
         binding.addFamilyMemberButton.setOnClickListener {
-            InviteMemberDialogFragment()
-                .show(parentFragmentManager, "invite_member")
+            InviteMemberDialogFragment().apply {
+                onInvitationCreated = {
+                    bindFamily()
+                }
+            }.show(parentFragmentManager, "invite_member")
         }
     }
 
@@ -70,8 +78,11 @@ class ProfileSettingsFragment : Fragment(R.layout.activity_profile) {
             binding.nameEditText.visibility = View.VISIBLE
             binding.emailEditText.visibility = View.VISIBLE
         } else {
-            binding.nameTextView.text = binding.nameEditText.text.toString()
-            binding.emailTextView.text = binding.emailEditText.text.toString()
+            val name = binding.nameEditText.text.toString()
+            val email = binding.emailEditText.text.toString()
+            familyStorage.updateCurrentUser(name = name, email = email)
+            bindProfile()
+            bindFamily()
 
             binding.nameTextView.visibility = View.VISIBLE
             binding.emailTextView.visibility = View.VISIBLE
@@ -128,24 +139,42 @@ class ProfileSettingsFragment : Fragment(R.layout.activity_profile) {
         binding.restrictedPreferencesRecyclerView.visibility = visibility
     }
 
-    private fun setMockFamily() {
-        val members = listOf(
-            "Папа" to "papa******@gmail.com",
-            "Сестра" to "sis******@gmail.com",
-            "Мама" to "mom******@gmail.com"
+    private fun bindFamily() {
+        binding.familyTitleTextView.text = familyStorage.getFamilyName().uppercase()
+        binding.familyMembersContainer.removeAllViews()
+        familyStorage.getMembers().forEach(::addFamilyMemberView)
+    }
+
+    private fun addFamilyMemberView(member: FamilyMember) {
+        val item = layoutInflater.inflate(
+            R.layout.item_family_member,
+            binding.familyMembersContainer,
+            false
         )
 
-        members.forEach { (name, email) ->
-            val item = layoutInflater.inflate(
-                R.layout.item_family_member,
-                binding.familyMembersContainer,
-                false
-            )
+        item.findViewById<TextView>(R.id.memberNameTextView).text = member.name
+        item.findViewById<TextView>(R.id.memberEmailTextView).text = member.email
+        item.findViewById<TextView>(R.id.memberRoleTextView).text = getMemberRoleText(member)
+        item.findViewById<View>(R.id.removeMemberButton).setOnClickListener {
+            if (familyStorage.removeMember(member.id)) {
+                Toast.makeText(requireContext(), getString(R.string.profile_member_removed), Toast.LENGTH_SHORT).show()
+                bindFamily()
+            } else {
+                Toast.makeText(requireContext(), getString(R.string.profile_cannot_remove_self), Toast.LENGTH_SHORT).show()
+            }
+        }
 
-            item.findViewById<TextView>(R.id.memberNameTextView).text = name
-            item.findViewById<TextView>(R.id.memberEmailTextView).text = email
+        binding.familyMembersContainer.addView(item)
+    }
 
-            binding.familyMembersContainer.addView(item)
+    private fun getMemberRoleText(member: FamilyMember): String {
+        if (member.status == "invited") {
+            return getString(R.string.profile_family_invited)
+        }
+        return if (member.role == "owner") {
+            getString(R.string.profile_family_owner)
+        } else {
+            getString(R.string.profile_family_member)
         }
     }
 
