@@ -1,85 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cardContainer"
     android:layout_width="match_parent"
     android:layout_height="150dp"
-    android:layout_marginBottom="16dp"
-    app:cardCornerRadius="20dp"
-    app:cardElevation="0dp">
+    android:layout_marginBottom="16dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <CheckBox
+        android:id="@+id/selectCheckBox"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:buttonTint="@color/button_primary"
+        android:contentDescription="@string/content_description_confirm"
+        app:layout_constraintBottom_toBottomOf="@id/cardContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/cardContainer" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardContainer"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:padding="16dp">
+        android:layout_marginStart="10dp"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/selectCheckBox"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/productImageView"
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:background="@drawable/bg_product_circle"
-            android:padding="16dp"
-            android:scaleType="centerCrop"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_milk"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
 
-        <TextView
-            android:id="@+id/nameTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:textColor="@color/text_primary"
-            android:textSize="25sp"
-            tools:text="Йогурт Epica"
-            app:layout_constraintStart_toEndOf="@id/productImageView"
-            app:layout_constraintTop_toTopOf="@id/productImageView"
-            app:layout_constraintEnd_toStartOf="@id/progressBar" />
+            <ImageView
+                android:id="@+id/productImageView"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:background="@drawable/bg_product_circle"
+                android:padding="16dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_milk" />
 
-        <!-- КОЛИЧЕСТВО -->
-        <TextView
-            android:id="@+id/amountTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            tools:text="2 шт."
-            android:textColor="@color/text_primary"
-            app:layout_constraintStart_toStartOf="@id/nameTextView"
-            app:layout_constraintTop_toBottomOf="@id/nameTextView" />
+            <TextView
+                android:id="@+id/nameTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:textColor="@color/text_primary"
+                android:textSize="25sp"
+                app:layout_constraintEnd_toStartOf="@id/lifeIndicatorContainer"
+                app:layout_constraintStart_toEndOf="@id/productImageView"
+                app:layout_constraintTop_toTopOf="@id/productImageView"
+                tools:text="Йогурт Epica" />
 
-        <!-- ДНИ -->
-        <TextView
-            android:id="@+id/daysTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            tools:text="осталось: 4дн"
-            android:textColor="@color/text_primary"
-            app:layout_constraintStart_toStartOf="@id/nameTextView"
-            app:layout_constraintTop_toBottomOf="@id/amountTextView" />
+            <TextView
+                android:id="@+id/amountTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@id/nameTextView"
+                app:layout_constraintTop_toBottomOf="@id/nameTextView"
+                tools:text="2 шт." />
 
-        <!-- ТЕГИ -->
-        <LinearLayout
-            android:id="@+id/tagsContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="@id/productImageView"
-            app:layout_constraintTop_toBottomOf="@id/productImageView" />
+            <TextView
+                android:id="@+id/daysTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_primary"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@id/nameTextView"
+                app:layout_constraintTop_toBottomOf="@id/amountTextView"
+                tools:text="осталось: 4дн" />
 
-        <!-- ПРАВЫЙ ПРОГРЕСС -->
-        <View
-            android:id="@+id/progressBar"
-            android:layout_width="17dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="11dp"
-            android:background="@drawable/bg_progress_vertical"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            <LinearLayout
+                android:id="@+id/tagsContainer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toStartOf="@id/lifeIndicatorContainer"
+                app:layout_constraintStart_toStartOf="@id/productImageView"
+                app:layout_constraintTop_toBottomOf="@id/productImageView" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/longLifeTextView"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:gravity="center"
+                android:text="@string/storage_life_long"
+                android:textColor="@color/text_primary"
+                android:textSize="11sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
 
-</com.google.android.material.card.MaterialCardView>
+            <TextView
+                android:id="@+id/expiredTextView"
+                android:layout_width="82dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="-6dp"
+                android:gravity="center"
+                android:rotation="90"
+                android:text="@string/storage_expired_label"
+                android:textColor="@color/background_primary"
+                android:textSize="14sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="gone" />
+
+            <FrameLayout
+                android:id="@+id/lifeIndicatorContainer"
+                android:layout_width="22dp"
+                android:layout_height="112dp"
+                android:layout_marginEnd="11dp"
+                android:background="@drawable/bg_progress_vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <View
+                    android:id="@+id/lifeIndicatorFill"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/bg_progress_vertical_fill" />
+
+            </FrameLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -141,6 +141,14 @@
     <string name="content_description_add_product">Добавить продукт</string>
     <string name="storage_add_product_soon">скоро тут будет функция добавления</string>
     <string name="storage_filter_soon">фильтр тоже будет работать</string>
+    <string name="storage_life_long">долго хранится</string>
+    <string name="storage_expired_label">ИСПОРЧЕНО</string>
+    <string name="storage_write_off_selected">Списать выбранное</string>
+    <string name="storage_selected_count">Выбрано: %1$d</string>
+    <string name="storage_written_off">Списано продуктов: %1$d</string>
+    <string name="storage_event_used">used</string>
+    <string name="storage_empty_title">Полочка пустая :(</string>
+    <string name="storage_empty_subtitle">Если хотите добавить продукт, нажмите на плюсик</string>
 
     <string name="hint_product_name">Название</string>
     <string name="hint_product_category">Категория (опционально)</string>
