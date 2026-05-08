@@ -11,6 +11,7 @@ import com.hse.polochka.core.storage_events.StorageEventStorage
 import com.hse.polochka.databinding.ActivityStorageBinding
 import com.hse.polochka.feature.storage.presentation.adapter.StorageAdapter
 import com.hse.polochka.feature.storage.presentation.model.StorageProductUi
+import com.hse.polochka.feature.storage.presentation.model.WriteOffResult
 
 class StorageFragment : Fragment(R.layout.activity_storage) {
 
@@ -67,21 +68,56 @@ class StorageFragment : Fragment(R.layout.activity_storage) {
         }
 
         binding.writeOffButton.setOnClickListener {
-            writeOffSelectedProducts()
+            showWriteOffProductsDialog()
+        }
+
+        binding.selectAllButton.setOnClickListener {
+            toggleSelectAllProducts()
         }
     }
 
     private fun updateBulkActionBar() {
         val selectedCount = selectedProductIds.size
+        val activeProductIds = getActiveProducts().map { it.id }.toSet()
+        val allActiveSelected = activeProductIds.isNotEmpty() && selectedProductIds.containsAll(activeProductIds)
+
         binding.bulkActionBar.visibility = if (selectedCount > 0) View.VISIBLE else View.GONE
         binding.selectedCountTextView.text = getString(R.string.storage_selected_count, selectedCount)
+        binding.selectAllButton.text = getString(
+            if (allActiveSelected) R.string.storage_clear_selection else R.string.storage_select_all
+        )
     }
 
-    private fun writeOffSelectedProducts() {
+    private fun toggleSelectAllProducts() {
+        val activeProductIds = getActiveProducts().map { it.id }
+        if (activeProductIds.isEmpty()) return
+
+        val allActiveSelected = selectedProductIds.containsAll(activeProductIds)
+        selectedProductIds.clear()
+        if (!allActiveSelected) {
+            selectedProductIds.addAll(activeProductIds)
+        }
+        storageAdapter.refreshSelection()
+        updateBulkActionBar()
+    }
+
+    private fun showWriteOffProductsDialog() {
         if (selectedProductIds.isEmpty()) return
 
+        val selectedProducts = getActiveProducts().filter { it.id in selectedProductIds }
+        if (selectedProducts.isEmpty()) return
+
+        WriteOffProductsDialogFragment().apply {
+            products = selectedProducts
+            onCompleted = ::writeOffSelectedProducts
+        }.show(parentFragmentManager, "write_off_products")
+    }
+
+    private fun writeOffSelectedProducts(results: List<WriteOffResult>) {
+        if (results.isEmpty()) return
+
         val now = System.currentTimeMillis()
-        val idsToWriteOff = selectedProductIds.toSet()
+        val idsToWriteOff = results.map { it.productId }.toSet()
         products = products.map { product ->
             if (product.id in idsToWriteOff) {
                 product.copy(isWrittenOff = true)
@@ -90,12 +126,12 @@ class StorageFragment : Fragment(R.layout.activity_storage) {
             }
         }
         eventStorage.addEvents(
-            idsToWriteOff.map { productId ->
+            results.map { result ->
                 StorageEvent(
-                    productId = productId,
+                    productId = result.productId,
                     eventType = getString(R.string.storage_event_used),
                     happenedAtMillis = now,
-                    reason = "quick_write_off",
+                    reason = result.reason,
                 )
             }
         )
@@ -111,15 +147,17 @@ class StorageFragment : Fragment(R.layout.activity_storage) {
     }
 
     private fun submitActiveProducts() {
-        storageAdapter.submitItems(products.filterNot { it.isWrittenOff })
+        storageAdapter.submitItems(getActiveProducts())
         updateEmptyState()
     }
 
     private fun updateEmptyState() {
-        val hasActiveProducts = products.any { !it.isWrittenOff }
+        val hasActiveProducts = getActiveProducts().isNotEmpty()
         binding.productsRecyclerView.visibility = if (hasActiveProducts) View.VISIBLE else View.GONE
         binding.emptyStateContainer.visibility = if (hasActiveProducts) View.GONE else View.VISIBLE
     }
+
+    private fun getActiveProducts(): List<StorageProductUi> = products.filterNot { it.isWrittenOff }
 
     private fun getMockProducts(): List<StorageProductUi> {
         val today = System.currentTimeMillis()

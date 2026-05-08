@@ -73,6 +73,10 @@ class StorageAdapter(
         notifyDataSetChanged()
     }
 
+    fun refreshSelection() {
+        notifyDataSetChanged()
+    }
+
     private fun bindTags(holder: ViewHolder, tags: List<String>) {
         holder.binding.tagsContainer.removeAllViews()
         tags.forEach { tag ->

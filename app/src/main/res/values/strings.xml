@@ -138,6 +138,7 @@
     <string name="storage_title">Ваши продукты</string>
     <string name="storage_search_hint">Что вы хотите найти?</string>
     <string name="content_description_filter">Фильтр</string>
+    <string name="content_description_close">Закрыть</string>
     <string name="content_description_add_product">Добавить продукт</string>
     <string name="storage_add_product_soon">скоро тут будет функция добавления</string>
     <string name="storage_filter_soon">фильтр тоже будет работать</string>
@@ -147,6 +148,18 @@
     <string name="storage_selected_count">Выбрано: %1$d</string>
     <string name="storage_written_off">Списано продуктов: %1$d</string>
     <string name="storage_event_used">used</string>
+    <string name="storage_select_all">Выбрать все</string>
+    <string name="storage_clear_selection">Снять выбор</string>
+    <string name="storage_write_off_progress">%1$d из %2$d</string>
+    <string name="storage_write_off_title">Что случилось с продуктом?</string>
+    <string name="storage_write_off_spoiled">Испортилось</string>
+    <string name="storage_write_off_eaten">Съели</string>
+    <string name="storage_write_off_custom">Своя причина</string>
+    <string name="storage_write_off_all_spoiled">Все испортилось</string>
+    <string name="storage_write_off_all_eaten">Все съели</string>
+    <string name="storage_custom_reason_title">Своя причина</string>
+    <string name="storage_custom_reason_hint">Например: отдали, потерялось</string>
+    <string name="storage_custom_reason_save">Сохранить</string>
     <string name="storage_empty_title">Полочка пустая :(</string>
     <string name="storage_empty_subtitle">Если хотите добавить продукт, нажмите на плюсик</string>
 
