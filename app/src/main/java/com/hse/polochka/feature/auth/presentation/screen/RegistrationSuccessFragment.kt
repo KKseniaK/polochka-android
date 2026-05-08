@@ -3,6 +3,7 @@ package com.hse.polochka.feature.auth.presentation.screen
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import com.hse.polochka.MainActivity
 import com.hse.polochka.R
 import com.hse.polochka.databinding.ActivityRegistrationSuccessBinding
 import com.hse.polochka.feature.onboarding.presentation.screen.OnboardingCategoriesFragment
@@ -24,7 +25,7 @@ class RegistrationSuccessFragment : Fragment(R.layout.activity_registration_succ
         }
 
         binding.skipSetupButton.setOnClickListener {
-            // позже откроем HomeFragment
+            (requireActivity() as MainActivity).openHome()
         }
     }
 

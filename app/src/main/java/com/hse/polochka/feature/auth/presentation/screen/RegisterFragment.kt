@@ -2,25 +2,85 @@ package com.hse.polochka.feature.auth.presentation.screen
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.hse.polochka.R
+import com.hse.polochka.core.network.ApiClient
+import com.hse.polochka.core.storage.UserSessionStorage
 import com.hse.polochka.databinding.ActivityAuthRegisterBinding
+import com.hse.polochka.feature.auth.data.remote.AuthApi
+import com.hse.polochka.feature.auth.data.repository.AuthRepositoryImpl
+import com.hse.polochka.feature.auth.presentation.state.AuthUiState
+import com.hse.polochka.feature.auth.presentation.viewmodel.AuthViewModel
+import com.hse.polochka.feature.auth.presentation.viewmodel.AuthViewModelFactory
+import kotlinx.coroutines.launch
 
 class RegisterFragment : Fragment(R.layout.activity_auth_register) {
 
     private var _binding: ActivityAuthRegisterBinding? = null
     private val binding get() = requireNotNull(_binding)
+    private lateinit var viewModel: AuthViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _binding = ActivityAuthRegisterBinding.bind(view)
+        viewModel = createViewModel()
 
         binding.goLoginTextView.setOnClickListener {
             openFragment(LoginFragment())
         }
 
         binding.registerSubmitButton.setOnClickListener {
-            openFragment(RegistrationSuccessFragment())
+            val name = binding.nameEditText.text.toString().trim()
+            val email = binding.registerEmailEditText.text.toString().trim()
+            val password = binding.registerPasswordEditText.text.toString()
+            val repeatPassword = binding.repeatPasswordEditText.text.toString()
+            when {
+                name.isBlank() -> showMessage("Enter name")
+                email.isBlank() -> showMessage("Enter email")
+                password.isBlank() -> showMessage("Enter password")
+                password != repeatPassword -> showMessage("Passwords do not match")
+                else -> viewModel.register(email, password, name)
+            }
         }
+
+        binding.googleRegisterButton.setOnClickListener {
+            showMessage("Google registration will be added later")
+        }
+
+        binding.vkRegisterButton.setOnClickListener {
+            showMessage("VK registration will be added later")
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.state.collect { state ->
+                binding.registerSubmitButton.isEnabled = state !is AuthUiState.Loading
+                when (state) {
+                    is AuthUiState.Authenticated -> {
+                        viewModel.resetState()
+                        openFragment(RegistrationSuccessFragment())
+                    }
+                    is AuthUiState.Error -> {
+                        showMessage(state.message)
+                        viewModel.resetState()
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
+
+    private fun createViewModel(): AuthViewModel {
+        val repository = AuthRepositoryImpl(
+            authApi = ApiClient.create(AuthApi::class.java),
+            sessionStorage = UserSessionStorage(requireContext()),
+        )
+        return ViewModelProvider(this, AuthViewModelFactory(repository))[AuthViewModel::class.java]
+    }
+
+    private fun showMessage(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     private fun openFragment(fragment: Fragment) {
