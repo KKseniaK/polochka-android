@@ -4,13 +4,19 @@ import com.hse.polochka.feature.preferences.data.dto.PreferencesDto
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.PUT
 
 interface PreferencesApi {
 
     @GET("me/preferences")
-    suspend fun getPreferences(): Response<PreferencesDto>
+    suspend fun getPreferences(
+        @Header("Authorization") authorization: String,
+    ): Response<PreferencesDto>
 
     @PUT("me/preferences")
-    suspend fun updatePreferences(@Body preferences: PreferencesDto): Response<PreferencesDto>
+    suspend fun updatePreferences(
+        @Header("Authorization") authorization: String,
+        @Body preferences: PreferencesDto,
+    ): Response<PreferencesDto>
 }
