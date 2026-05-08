@@ -154,12 +154,50 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/preferencesRecyclerView"
+            android:id="@+id/likedPreferencesRecyclerView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/likedPreferencesTitleTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/likedPreferencesTitleTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="@string/profile_liked_tags_title"
+            android:textColor="@color/button_primary"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/preferencesTitleTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/restrictedPreferencesTitleTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="@string/profile_restricted_tags_title"
+            android:textColor="@color/button_primary"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/likedPreferencesRecyclerView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/restrictedPreferencesRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/restrictedPreferencesTitleTextView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -169,7 +207,7 @@
             android:layout_height="3dp"
             android:layout_marginTop="28dp"
             android:background="@drawable/bg_dashed_line"
-            app:layout_constraintTop_toBottomOf="@id/preferencesRecyclerView"
+            app:layout_constraintTop_toBottomOf="@id/restrictedPreferencesRecyclerView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

@@ -9,6 +9,7 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.hse.polochka.R
+import com.hse.polochka.core.preferences.PreferencesStorage
 import com.hse.polochka.databinding.ActivityProfileBinding
 import com.hse.polochka.feature.onboarding.presentation.adapter.PreferenceChipAdapter
 import com.hse.polochka.feature.onboarding.presentation.provider.PreferenceChipProvider
@@ -19,7 +20,9 @@ class ProfileSettingsFragment : Fragment(R.layout.activity_profile) {
     private var _binding: ActivityProfileBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    private lateinit var preferencesAdapter: PreferenceChipAdapter
+    private lateinit var likedPreferencesAdapter: PreferenceChipAdapter
+    private lateinit var restrictedPreferencesAdapter: PreferenceChipAdapter
+    private lateinit var preferencesStorage: PreferencesStorage
     private var preferencesExpanded = false
 
     private var isEditMode = false
@@ -28,6 +31,7 @@ class ProfileSettingsFragment : Fragment(R.layout.activity_profile) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = ActivityProfileBinding.bind(view)
+        preferencesStorage = PreferencesStorage(requireContext())
 
         setMockProfile()
         setupPreferences()
@@ -36,8 +40,8 @@ class ProfileSettingsFragment : Fragment(R.layout.activity_profile) {
     }
 
     private fun setMockProfile() {
-        binding.nameTextView.text = "Вася Пупкин"
-        binding.emailTextView.text = "vasyapupkin@gmail.com"
+        binding.nameTextView.text = getString(R.string.default_user_name)
+        binding.emailTextView.text = "test@polochka.local"
         binding.nameEditText.setText(binding.nameTextView.text)
         binding.emailEditText.setText(binding.emailTextView.text)
     }
@@ -77,26 +81,51 @@ class ProfileSettingsFragment : Fragment(R.layout.activity_profile) {
     }
 
     private fun setupPreferences() {
-        val selectedIds = listOf(112, 110, 121, 104, 106, 103)
+        val preferences = preferencesStorage.getState()
+        likedPreferencesAdapter = PreferenceChipAdapter(
+            PreferenceChipProvider.getProductChips(preferences.likedTagIds),
+        ) { selectedIds ->
+            preferencesStorage.saveLikedTagIds(selectedIds)
+        }
 
-        preferencesAdapter = PreferenceChipAdapter(
-            PreferenceChipProvider.getProductChips(selectedIds)
-        )
+        restrictedPreferencesAdapter = PreferenceChipAdapter(
+            (
+                PreferenceChipProvider.getRestrictionChips(preferences.restrictedTagIds) +
+                    PreferenceChipProvider.getProductChips(preferences.restrictedTagIds)
+                ).toMutableList(),
+        ) { selectedIds ->
+            preferencesStorage.saveRestrictedTagIds(selectedIds)
+        }
 
-        binding.preferencesRecyclerView.layoutManager =
+        binding.likedPreferencesRecyclerView.layoutManager =
             FlexboxLayoutManager(requireContext()).apply {
                 flexDirection = FlexDirection.ROW
                 flexWrap = FlexWrap.WRAP
                 justifyContent = JustifyContent.FLEX_START
             }
 
-        binding.preferencesRecyclerView.adapter = preferencesAdapter
+        binding.restrictedPreferencesRecyclerView.layoutManager =
+            FlexboxLayoutManager(requireContext()).apply {
+                flexDirection = FlexDirection.ROW
+                flexWrap = FlexWrap.WRAP
+                justifyContent = JustifyContent.FLEX_START
+            }
+
+        binding.likedPreferencesRecyclerView.adapter = likedPreferencesAdapter
+        binding.restrictedPreferencesRecyclerView.adapter = restrictedPreferencesAdapter
 
         binding.preferencesExpandButton.setOnClickListener {
             preferencesExpanded = !preferencesExpanded
-            binding.preferencesRecyclerView.visibility =
-                if (preferencesExpanded) View.VISIBLE else View.GONE
+            updatePreferencesVisibility()
         }
+    }
+
+    private fun updatePreferencesVisibility() {
+        val visibility = if (preferencesExpanded) View.VISIBLE else View.GONE
+        binding.likedPreferencesTitleTextView.visibility = visibility
+        binding.likedPreferencesRecyclerView.visibility = visibility
+        binding.restrictedPreferencesTitleTextView.visibility = visibility
+        binding.restrictedPreferencesRecyclerView.visibility = visibility
     }
 
     private fun setMockFamily() {

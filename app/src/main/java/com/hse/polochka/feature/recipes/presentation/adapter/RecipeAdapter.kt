@@ -38,7 +38,7 @@ class RecipeAdapter(
 
         holder.binding.recipeImageView.setImageResource(item.imageResId)
         holder.binding.titleTextView.text = item.title
-        holder.binding.statusTextView.text = item.status
+        holder.binding.statusTextView.text = item.personalizedStatus ?: item.status
         holder.binding.timeTextView.text = item.time
         holder.binding.categoryTextView.text = item.category
 

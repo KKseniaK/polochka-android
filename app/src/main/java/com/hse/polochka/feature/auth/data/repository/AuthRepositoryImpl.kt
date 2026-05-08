@@ -24,6 +24,10 @@ class AuthRepositoryImpl(
     override suspend fun register(email: String, password: String, displayName: String): User {
         val cleanEmail = email.trim()
         val cleanDisplayName = displayName.trim()
+        if (isLocalTestUser(cleanEmail, password)) {
+            return createLocalSession(LOCAL_TEST_EMAIL, cleanDisplayName.ifBlank { LOCAL_TEST_NAME })
+        }
+
         val request = RegisterRequestDto(
             email = cleanEmail,
             password = password,

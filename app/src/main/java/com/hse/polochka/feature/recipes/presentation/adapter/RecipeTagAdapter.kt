@@ -3,7 +3,6 @@ package com.hse.polochka.feature.recipes.presentation.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.hse.polochka.databinding.ItemRecipeCardBinding
 import com.hse.polochka.databinding.ItemRecipeTagBinding
 
 class RecipeTagAdapter(

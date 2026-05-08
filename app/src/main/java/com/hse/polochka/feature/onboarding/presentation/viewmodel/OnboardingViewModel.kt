@@ -12,19 +12,19 @@ class OnboardingViewModel : ViewModel() {
     val uiState: OnboardingUiState
         get() = _uiState
 
-    fun saveSelectedCategories(categoryIds: List<Int>) {
+    fun saveSelectedCategories(categoryIds: List<String>) {
         _uiState = _uiState.copy(
             selectedCategoryIds = categoryIds
         )
     }
 
-    fun saveLikedProducts(productIds: List<Int>) {
+    fun saveLikedProducts(productIds: List<String>) {
         _uiState = _uiState.copy(
             likedProductIds = productIds
         )
     }
 
-    fun saveDislikedProducts(productIds: List<Int>) {
+    fun saveDislikedProducts(productIds: List<String>) {
         _uiState = _uiState.copy(
             dislikedProductIds = productIds
         )

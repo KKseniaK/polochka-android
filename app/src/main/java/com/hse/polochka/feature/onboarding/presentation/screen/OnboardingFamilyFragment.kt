@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.hse.polochka.MainActivity
 import com.hse.polochka.R
+import com.hse.polochka.core.preferences.PreferencesStorage
 import com.hse.polochka.databinding.ActivityOnboardingFamilyBinding
-import com.hse.polochka.feature.home.presentation.screen.HomeFragment
 import com.hse.polochka.feature.onboarding.presentation.viewmodel.OnboardingViewModel
 
 class OnboardingFamilyFragment : BaseOnboardingFragment(R.layout.activity_onboarding_family) {
@@ -19,6 +19,7 @@ class OnboardingFamilyFragment : BaseOnboardingFragment(R.layout.activity_onboar
     private val binding get() = requireNotNull(_binding)
 
     private val viewModel: OnboardingViewModel by activityViewModels()
+    private lateinit var preferencesStorage: PreferencesStorage
 
     private var selectedImageUri: Uri? = null
 
@@ -36,6 +37,7 @@ class OnboardingFamilyFragment : BaseOnboardingFragment(R.layout.activity_onboar
         super.onViewCreated(view, savedInstanceState)
 
         _binding = ActivityOnboardingFamilyBinding.bind(view)
+        preferencesStorage = PreferencesStorage(requireContext())
 
         setupProgress(
             step = 4,
@@ -74,6 +76,7 @@ class OnboardingFamilyFragment : BaseOnboardingFragment(R.layout.activity_onboar
                 Toast.LENGTH_SHORT
             ).show()
 
+            preferencesStorage.markOnboardingCompleted()
             openHome()
         }
 
@@ -84,6 +87,7 @@ class OnboardingFamilyFragment : BaseOnboardingFragment(R.layout.activity_onboar
                 Toast.LENGTH_SHORT
             ).show()
 
+            preferencesStorage.markOnboardingCompleted()
             openHome()
         }
 

@@ -1,16 +1,15 @@
 package com.hse.polochka.feature.onboarding.presentation.adapter
 
 import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.hse.polochka.R
 import com.hse.polochka.databinding.ItemPreferenceChipBinding
 import com.hse.polochka.feature.onboarding.presentation.model.PreferenceChipUi
 
 class PreferenceChipAdapter(
-    private val items: MutableList<PreferenceChipUi>
+    private val items: MutableList<PreferenceChipUi>,
+    private val onSelectionChanged: (List<String>) -> Unit = {},
 ) : RecyclerView.Adapter<PreferenceChipAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,7 +27,7 @@ class PreferenceChipAdapter(
 
     override fun getItemCount(): Int = items.size
 
-    fun getSelectedIds(): List<Int> {
+    fun getSelectedIds(): List<String> {
         return items.filter { it.isSelected }.map { it.id }
     }
 
@@ -59,6 +58,7 @@ class PreferenceChipAdapter(
                 items[position] = current.copy(isSelected = !current.isSelected)
 
                 notifyItemChanged(position)
+                onSelectionChanged(getSelectedIds())
             }
         }
     }

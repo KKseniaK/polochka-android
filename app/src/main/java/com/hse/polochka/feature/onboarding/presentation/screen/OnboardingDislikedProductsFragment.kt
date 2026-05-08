@@ -9,9 +9,10 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import com.hse.polochka.R
+import com.hse.polochka.core.preferences.PreferencesStorage
 import com.hse.polochka.databinding.ActivityOnboardingChipSelectionBinding
 import com.hse.polochka.feature.onboarding.presentation.adapter.PreferenceChipAdapter
-import com.hse.polochka.feature.onboarding.presentation.model.PreferenceChipUi
+import com.hse.polochka.feature.onboarding.presentation.provider.PreferenceChipProvider
 import com.hse.polochka.feature.onboarding.presentation.viewmodel.OnboardingViewModel
 
 class OnboardingDislikedProductsFragment :
@@ -22,11 +23,13 @@ class OnboardingDislikedProductsFragment :
 
     private val viewModel: OnboardingViewModel by activityViewModels()
     private lateinit var chipAdapter: PreferenceChipAdapter
+    private lateinit var preferencesStorage: PreferencesStorage
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = ActivityOnboardingChipSelectionBinding.bind(view)
+        preferencesStorage = PreferencesStorage(requireContext())
 
         setupProgress(
             step = 3,
@@ -40,7 +43,11 @@ class OnboardingDislikedProductsFragment :
 
         binding.titleTextView.setText(R.string.onboarding_disliked_title)
 
-        chipAdapter = PreferenceChipAdapter(getProductChips())
+        chipAdapter = PreferenceChipAdapter(
+            PreferenceChipProvider.getProductChips(
+                preferencesStorage.getState().restrictedTagIds
+            )
+        )
 
         binding.chipsRecyclerView.layoutManager =
             FlexboxLayoutManager(requireContext()).apply {
@@ -52,39 +59,20 @@ class OnboardingDislikedProductsFragment :
         binding.chipsRecyclerView.adapter = chipAdapter
 
         binding.nextButton.setOnClickListener {
-            viewModel.saveDislikedProducts(chipAdapter.getSelectedIds())
+            saveDislikedProducts(chipAdapter.getSelectedIds())
             openFragment(OnboardingFamilyFragment())
         }
 
         binding.skipButton.setOnClickListener {
+            saveDislikedProducts(emptyList())
             openFragment(OnboardingFamilyFragment())
         }
     }
 
-    private fun getProductChips(): MutableList<PreferenceChipUi> {
-        return mutableListOf(
-            PreferenceChipUi(101, R.string.pref_milk, R.drawable.ic_milk),
-            PreferenceChipUi(102, R.string.pref_sour_milk, R.drawable.ic_sour_milk),
-            PreferenceChipUi(103, R.string.pref_cheese, R.drawable.ic_cheese),
-            PreferenceChipUi(104, R.string.pref_meat, R.drawable.ic_meat),
-            PreferenceChipUi(105, R.string.pref_fish, R.drawable.ic_fish),
-            PreferenceChipUi(106, R.string.pref_poultry, R.drawable.ic_poultry),
-            PreferenceChipUi(107, R.string.pref_seafood, R.drawable.ic_seafood),
-            PreferenceChipUi(108, R.string.pref_sausage, R.drawable.ic_sausage),
-            PreferenceChipUi(109, R.string.pref_vegetables, R.drawable.ic_vegetables),
-            PreferenceChipUi(110, R.string.pref_fruits, R.drawable.ic_fruits),
-            PreferenceChipUi(111, R.string.pref_greens, R.drawable.ic_greens),
-            PreferenceChipUi(112, R.string.pref_berries, R.drawable.ic_berries),
-            PreferenceChipUi(113, R.string.pref_mushrooms, R.drawable.ic_mushrooms),
-            PreferenceChipUi(114, R.string.pref_bakery, R.drawable.ic_bakery),
-            PreferenceChipUi(115, R.string.pref_pasta, R.drawable.ic_pasta),
-            PreferenceChipUi(116, R.string.pref_grains, R.drawable.ic_grains),
-            PreferenceChipUi(117, R.string.pref_coffee, R.drawable.ic_coffee),
-            PreferenceChipUi(118, R.string.pref_tea, R.drawable.ic_tea),
-            PreferenceChipUi(119, R.string.pref_sweet, R.drawable.ic_sweet),
-            PreferenceChipUi(120, R.string.pref_salty, R.drawable.ic_salty),
-            PreferenceChipUi(121, R.string.pref_hot, R.drawable.ic_hot)
-        )
+    private fun saveDislikedProducts(tagIds: List<String>) {
+        val allRestrictedTagIds = (viewModel.uiState.selectedCategoryIds + tagIds).distinct()
+        viewModel.saveDislikedProducts(tagIds)
+        preferencesStorage.saveRestrictedTagIds(allRestrictedTagIds)
     }
 
     private fun openFragment(fragment: Fragment) {
