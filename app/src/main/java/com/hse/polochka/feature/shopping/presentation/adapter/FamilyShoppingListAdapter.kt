@@ -1,6 +1,7 @@
 package com.hse.polochka.feature.shopping.presentation.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.hse.polochka.databinding.ItemFamilyShoppingListBinding
@@ -41,12 +42,17 @@ class FamilyShoppingListAdapter(
             val previewItem = previewItems.getOrNull(index)
 
             if (previewItem == null) {
+                checkBox.visibility = View.GONE
                 checkBox.text = ""
                 checkBox.isChecked = false
             } else {
+                checkBox.visibility = View.VISIBLE
                 checkBox.text = previewItem.title
                 checkBox.isChecked = previewItem.isChecked
             }
+            checkBox.isClickable = false
+            checkBox.isFocusable = false
+            checkBox.isEnabled = true
         }
 
         holder.binding.root.setOnClickListener {

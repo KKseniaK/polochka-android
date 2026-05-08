@@ -9,7 +9,10 @@ import com.hse.polochka.feature.shopping.presentation.model.ShoppingItemUi
 
 class ShoppingListAdapter(
     private val items: MutableList<ShoppingItemUi>,
-    private val showDeleteButton: Boolean = true
+    private val showDeleteButton: Boolean = true,
+    private val isPreview: Boolean = false,
+    private val onCheckedChange: (ShoppingItemUi, Boolean) -> Boolean = { _, _ -> true },
+    private val onDeleteClick: (ShoppingItemUi) -> Boolean = { _ -> true },
 ) : RecyclerView.Adapter<ShoppingListAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemShoppingCheckboxBinding) :
@@ -36,17 +39,28 @@ class ShoppingListAdapter(
 
         holder.binding.checkBox.text = item.title
         holder.binding.checkBox.isChecked = item.isChecked
+        holder.binding.checkBox.isEnabled = true
+        holder.binding.checkBox.isClickable = !isPreview
+        holder.binding.checkBox.isFocusable = !isPreview
 
         holder.binding.checkBox.setOnCheckedChangeListener { _, isChecked ->
             val currentPosition = holder.bindingAdapterPosition
             if (currentPosition == RecyclerView.NO_POSITION) return@setOnCheckedChangeListener
 
-            items[currentPosition] = items[currentPosition].copy(isChecked = isChecked)
+            val currentItem = items[currentPosition]
+            val accepted = onCheckedChange(currentItem, isChecked)
+            if (accepted) {
+                items[currentPosition] = currentItem.copy(isChecked = isChecked)
+            } else {
+                notifyItemChanged(currentPosition)
+            }
         }
 
         holder.binding.deleteButton.setOnClickListener {
             val currentPosition = holder.bindingAdapterPosition
             if (currentPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
+            if (!onDeleteClick(items[currentPosition])) return@setOnClickListener
 
             items.removeAt(currentPosition)
             notifyItemRemoved(currentPosition)
@@ -64,4 +78,20 @@ class ShoppingListAdapter(
         items.add(newItem)
         notifyItemInserted(items.lastIndex)
     }
+
+    fun submitItems(updatedItems: List<ShoppingItemUi>) {
+        items.clear()
+        items.addAll(updatedItems)
+        notifyDataSetChanged()
+    }
+
+    fun removeItem(item: ShoppingItemUi) {
+        val index = items.indexOfFirst { it.id == item.id }
+        if (index == -1) return
+
+        items.removeAt(index)
+        notifyItemRemoved(index)
+    }
+
+    fun currentItems(): List<ShoppingItemUi> = items.toList()
 }

@@ -80,4 +80,25 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/moveBoughtToStorageButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/shape_button_primary"
+        android:text="@string/shopping_move_bought_to_storage"
+        android:textAllCaps="false"
+        android:textColor="@color/background_primary"
+        app:backgroundTint="@null" />
+
+    <TextView
+        android:id="@+id/storageCareTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="@string/shopping_storage_care_hint"
+        android:textColor="@color/text_secondary"
+        android:textSize="14sp" />
+
 </LinearLayout>

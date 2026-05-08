@@ -2,6 +2,7 @@ package com.hse.polochka.feature.shopping.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hse.polochka.databinding.ItemShoppingHistoryBinding
 import com.hse.polochka.feature.shopping.presentation.model.ShoppingHistoryUi
@@ -29,9 +30,17 @@ class ShoppingHistoryAdapter(
         val item = items[position]
 
         holder.binding.dateTextView.text = item.date
+        holder.binding.historyItemsRecyclerView.layoutManager =
+            LinearLayoutManager(holder.binding.root.context)
+        holder.binding.historyItemsRecyclerView.adapter =
+            HistoryProductAdapter(item.items.take(PREVIEW_ITEMS_LIMIT))
 
         holder.binding.root.setOnClickListener {
             onClick(item)
         }
+    }
+
+    private companion object {
+        const val PREVIEW_ITEMS_LIMIT = 3
     }
 }

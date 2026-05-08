@@ -40,9 +40,9 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/shoppingListRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:layout_weight="1"
+                android:nestedScrollingEnabled="false"
                 tools:listitem="@layout/item_shopping_checkbox"
                 tools:itemCount="4"/>
 
@@ -56,33 +56,37 @@
 
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/familyListsRecyclerView"
+        <FrameLayout
+            android:id="@+id/familyListsSection"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
-            android:clipToPadding="false"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/mainShoppingCard"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:listitem="@layout/item_family_shopping_list"
-            tools:itemCount="6" />
+            app:layout_constraintEnd_toEndOf="parent">
 
-        <TextView
-            android:id="@+id/noFamilyListsTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:text="@string/shopping_no_family_lists"
-            android:textColor="@color/text_secondary"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/mainShoppingCard"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/familyListsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="6"
+                tools:listitem="@layout/item_family_shopping_list" />
+
+            <TextView
+                android:id="@+id/noFamilyListsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingVertical="22dp"
+                android:text="@string/shopping_no_family_lists"
+                android:textColor="@color/text_secondary"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
+        </FrameLayout>
 
         <View
             android:id="@+id/divider"
@@ -90,7 +94,7 @@
             android:layout_height="3dp"
             android:layout_marginTop="24dp"
             android:background="@drawable/bg_dashed_line"
-            app:layout_constraintTop_toBottomOf="@id/familyListsRecyclerView"
+            app:layout_constraintTop_toBottomOf="@id/familyListsSection"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

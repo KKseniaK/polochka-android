@@ -220,6 +220,23 @@
     <string name="shopping_add_product_hint">Добавить продукт</string>
     <string name="shopping_history_title">История покупок</string>
     <string name="shopping_no_family_lists">Семейных списков пока нет</string>
+    <string name="shopping_history_receipt_title">Чек за %1$s</string>
+    <string name="shopping_move_bought_to_storage">Сложить купленное в хранилище</string>
+    <string name="shopping_storage_care_hint">Позвольте Полочке позаботиться о сохранности ваших продуктов</string>
+    <string name="shopping_moved_to_storage">Перенесли в хранилище: %1$d</string>
+    <string name="shopping_conflict_deleted_title">Уже удалили</string>
+    <string name="shopping_conflict_deleted_message">Пользователь папа уже удалил %1$s у себя в списке. Вы уже купили?</string>
+    <string name="shopping_conflict_bought_by_owner_title">Уже купили</string>
+    <string name="shopping_conflict_bought_by_owner_message">Пользователь папа уже купил %1$s. Вы тоже уже купили?</string>
+    <string name="shopping_conflict_send_to_storage">Да, отправить продукт в хранилище</string>
+    <string name="shopping_conflict_do_not_buy_extra">Нет, я не буду брать лишний</string>
+    <string name="shopping_conflict_bought_by_you_title">Вы уже отмечали</string>
+    <string name="shopping_conflict_bought_by_you_message">Эта покупка уже была отмечена с вашей стороны. Повторное действие не применяем.</string>
+    <string name="shopping_delete_reason_title">Удалить из списка?</string>
+    <string name="shopping_delete_reason_message">Что случилось с “%1$s”?</string>
+    <string name="shopping_delete_bought">Купили, в хранилище</string>
+    <string name="shopping_delete_not_needed">Не нужно</string>
+    <string name="shopping_delete_remember_choice">Запомнить и больше не спрашивать</string>
 
     <!-- реецепты -->
     <string name="recipes_title">Рецепты</string>
