@@ -6,6 +6,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hse.polochka.R
+import com.hse.polochka.core.storage_events.StorageEvent
+import com.hse.polochka.core.storage_events.StorageEventStorage
 import com.hse.polochka.databinding.ActivityShoppingBinding
 import com.hse.polochka.feature.shopping.presentation.adapter.FamilyShoppingListAdapter
 import com.hse.polochka.feature.shopping.presentation.adapter.ShoppingHistoryAdapter
@@ -27,6 +29,7 @@ class ShoppingFragment : Fragment(R.layout.activity_shopping) {
     )
     private val familyLists = getMockFamilyLists().toMutableList()
     private lateinit var previewAdapter: ShoppingListAdapter
+    private lateinit var eventStorage: StorageEventStorage
     private val shoppingPreferences by lazy {
         requireContext().getSharedPreferences("shopping_preferences", android.content.Context.MODE_PRIVATE)
     }
@@ -35,6 +38,7 @@ class ShoppingFragment : Fragment(R.layout.activity_shopping) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = ActivityShoppingBinding.bind(view)
+        eventStorage = StorageEventStorage(requireContext())
 
         setupMainShoppingList()
         setupFamilyLists()
@@ -110,11 +114,48 @@ class ShoppingFragment : Fragment(R.layout.activity_shopping) {
     private fun moveBoughtItemsToStorage(items: List<ShoppingItemUi>) {
         if (items.isEmpty()) return
 
+        eventStorage.addEvents(
+            items.map { item ->
+                StorageEvent(
+                    productId = item.id,
+                    eventType = EVENT_BOUGHT,
+                    happenedAtMillis = System.currentTimeMillis(),
+                    reason = "shopping",
+                    productName = item.title,
+                    category = categoryForTitle(item.title),
+                    quantity = 1,
+                    estimatedPriceRub = priceForTitle(item.title),
+                )
+            }
+        )
+
         Toast.makeText(
             requireContext(),
             getString(R.string.shopping_moved_to_storage, items.size),
             Toast.LENGTH_SHORT,
         ).show()
+    }
+
+    private fun categoryForTitle(title: String): String {
+        val normalized = title.lowercase()
+        return when {
+            "мол" in normalized || "сыр" in normalized || "йогурт" in normalized -> "Молочка"
+            "яй" in normalized || "хлеб" in normalized || "макарон" in normalized -> "База"
+            "яблок" in normalized || "помидор" in normalized || "манго" in normalized -> "Овощи/фрукты"
+            else -> "Другое"
+        }
+    }
+
+    private fun priceForTitle(title: String): Int {
+        val normalized = title.lowercase()
+        return when {
+            "сыр" in normalized -> 280
+            "мол" in normalized -> 110
+            "яй" in normalized -> 160
+            "хлеб" in normalized -> 70
+            "манго" in normalized -> 240
+            else -> 120
+        }
     }
 
     private fun updateOwnShoppingItems(updatedItems: List<ShoppingItemUi>) {
@@ -273,5 +314,6 @@ class ShoppingFragment : Fragment(R.layout.activity_shopping) {
     private companion object {
         const val PREVIEW_ITEMS_LIMIT = 3
         const val KEY_ASK_BEFORE_DELETE = "ask_before_delete"
+        const val EVENT_BOUGHT = "bought"
     }
 }

@@ -27,4 +27,10 @@ data class StorageEventDto(
     val eventType: String,
     val happenedAtMillis: Long,
     val reason: String,
+    val userId: String? = null,
+    val userName: String? = null,
+    val productName: String? = null,
+    val category: String? = null,
+    val quantity: Int = 1,
+    val estimatedPriceRub: Int = 0,
 )

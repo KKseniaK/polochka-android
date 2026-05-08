@@ -171,6 +171,8 @@
     <!-- статистика -->
     <string name="analytics_title">Статистика</string>
     <string name="analytics_month">Месяц: %1$s</string>
+    <string name="analytics_month_previous">‹</string>
+    <string name="analytics_month_next">›</string>
     <string name="analytics_bought_label">БЫЛО КУПЛЕНО:</string>
     <string name="analytics_bought_value_default">0 продуктов</string>
     <string name="analytics_saved_money_label">ВЫ СЭКОНОМИЛИ:</string>
@@ -180,7 +182,8 @@
     <string name="analytics_mode_percent">%</string>
     <string name="analytics_mode_count">шт.</string>
 
-    <string name="analytics_used">тут будет диаграмма</string>
+    <string name="analytics_used">использовано</string>
+    <string name="analytics_empty_chart">пока нет данных</string>
 
     <string name="analytics_milk">Молоко</string>
     <string name="analytics_often_bought">чаще всего\nпокупали</string>

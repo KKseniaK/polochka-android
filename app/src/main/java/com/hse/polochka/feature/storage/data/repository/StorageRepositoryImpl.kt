@@ -68,6 +68,12 @@ class StorageRepositoryImpl(
             eventType = eventType,
             happenedAtMillis = happenedAtMillis,
             reason = reason,
+            userId = userId,
+            userName = userName,
+            productName = productName,
+            category = category,
+            quantity = quantity,
+            estimatedPriceRub = estimatedPriceRub,
         )
 
     private fun String?.toImageResId(): Int =

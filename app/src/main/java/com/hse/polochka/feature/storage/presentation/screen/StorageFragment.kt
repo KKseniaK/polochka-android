@@ -127,11 +127,16 @@ class StorageFragment : Fragment(R.layout.activity_storage) {
         }
         eventStorage.addEvents(
             results.map { result ->
+                val product = products.firstOrNull { it.id == result.productId }
                 StorageEvent(
                     productId = result.productId,
                     eventType = getString(R.string.storage_event_used),
                     happenedAtMillis = now,
                     reason = result.reason,
+                    productName = product?.name.orEmpty(),
+                    category = product?.tags?.firstOrNull().orEmpty(),
+                    quantity = 1,
+                    estimatedPriceRub = 120,
                 )
             }
         )
