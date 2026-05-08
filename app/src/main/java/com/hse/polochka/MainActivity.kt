@@ -44,10 +44,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun createAuthViewModel(): AuthViewModel {
         val repository = AuthRepositoryImpl(
+            context = this,
             authApi = ApiClient.create(AuthApi::class.java),
             sessionStorage = UserSessionStorage(this),
         )
-        return ViewModelProvider(this, AuthViewModelFactory(repository))[AuthViewModel::class.java]
+        return ViewModelProvider(this, AuthViewModelFactory(this, repository))[AuthViewModel::class.java]
     }
 
     private fun restoreSession() {

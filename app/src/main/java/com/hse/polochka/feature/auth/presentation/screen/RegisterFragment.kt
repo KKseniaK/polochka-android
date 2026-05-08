@@ -37,20 +37,20 @@ class RegisterFragment : Fragment(R.layout.activity_auth_register) {
             val password = binding.registerPasswordEditText.text.toString()
             val repeatPassword = binding.repeatPasswordEditText.text.toString()
             when {
-                name.isBlank() -> showMessage("Enter name")
-                email.isBlank() -> showMessage("Enter email")
-                password.isBlank() -> showMessage("Enter password")
-                password != repeatPassword -> showMessage("Passwords do not match")
+                name.isBlank() -> showMessage(getString(R.string.auth_error_enter_name))
+                email.isBlank() -> showMessage(getString(R.string.auth_error_enter_email))
+                password.isBlank() -> showMessage(getString(R.string.auth_error_enter_password))
+                password != repeatPassword -> showMessage(getString(R.string.auth_error_passwords_do_not_match))
                 else -> viewModel.register(email, password, name)
             }
         }
 
         binding.googleRegisterButton.setOnClickListener {
-            showMessage("Google registration will be added later")
+            showMessage(getString(R.string.auth_google_registration_soon))
         }
 
         binding.vkRegisterButton.setOnClickListener {
-            showMessage("VK registration will be added later")
+            showMessage(getString(R.string.auth_vk_registration_soon))
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -73,10 +73,14 @@ class RegisterFragment : Fragment(R.layout.activity_auth_register) {
 
     private fun createViewModel(): AuthViewModel {
         val repository = AuthRepositoryImpl(
+            context = requireContext(),
             authApi = ApiClient.create(AuthApi::class.java),
             sessionStorage = UserSessionStorage(requireContext()),
         )
-        return ViewModelProvider(this, AuthViewModelFactory(repository))[AuthViewModel::class.java]
+        return ViewModelProvider(
+            this,
+            AuthViewModelFactory(requireContext(), repository)
+        )[AuthViewModel::class.java]
     }
 
     private fun showMessage(message: String) {

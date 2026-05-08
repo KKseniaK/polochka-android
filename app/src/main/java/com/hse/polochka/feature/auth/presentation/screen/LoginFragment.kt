@@ -40,18 +40,18 @@ class LoginFragment : Fragment(R.layout.activity_auth_login) {
             val email = binding.emailEditText.text.toString().trim()
             val password = binding.passwordEditText.text.toString()
             when {
-                email.isBlank() -> showMessage("Enter email")
-                password.isBlank() -> showMessage("Enter password")
+                email.isBlank() -> showMessage(getString(R.string.auth_error_enter_email))
+                password.isBlank() -> showMessage(getString(R.string.auth_error_enter_password))
                 else -> viewModel.login(email, password)
             }
         }
 
         binding.googleRegisterButton.setOnClickListener {
-            showMessage("Google login will be added later")
+            showMessage(getString(R.string.auth_google_login_soon))
         }
 
         binding.vkRegisterButton.setOnClickListener {
-            showMessage("VK login will be added later")
+            showMessage(getString(R.string.auth_vk_login_soon))
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -74,10 +74,14 @@ class LoginFragment : Fragment(R.layout.activity_auth_login) {
 
     private fun createViewModel(): AuthViewModel {
         val repository = AuthRepositoryImpl(
+            context = requireContext(),
             authApi = ApiClient.create(AuthApi::class.java),
             sessionStorage = UserSessionStorage(requireContext()),
         )
-        return ViewModelProvider(this, AuthViewModelFactory(repository))[AuthViewModel::class.java]
+        return ViewModelProvider(
+            this,
+            AuthViewModelFactory(requireContext(), repository)
+        )[AuthViewModel::class.java]
     }
 
     private fun showMessage(message: String) {

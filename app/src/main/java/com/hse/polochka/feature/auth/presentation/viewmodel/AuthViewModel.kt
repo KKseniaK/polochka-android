@@ -1,8 +1,10 @@
 package com.hse.polochka.feature.auth.presentation.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.hse.polochka.R
 import com.hse.polochka.feature.auth.domain.model.User
 import com.hse.polochka.feature.auth.domain.repository.AuthRepository
 import com.hse.polochka.feature.auth.domain.usecase.LoginUseCase
@@ -14,6 +16,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class AuthViewModel(
+    private val context: Context,
     private val loginUseCase: LoginUseCase,
     private val registerUseCase: RegisterUseCase,
     private val repository: AuthRepository,
@@ -37,7 +40,9 @@ class AuthViewModel(
     fun restoreSession() {
         if (!repository.hasToken()) return
         runAuthRequest {
-            repository.currentUser() ?: throw IllegalStateException("Session expired")
+            repository.currentUser() ?: throw IllegalStateException(
+                context.getString(R.string.auth_error_session_expired)
+            )
         }
     }
 
@@ -51,19 +56,25 @@ class AuthViewModel(
             _state.value = runCatching { block() }
                 .fold(
                     onSuccess = { AuthUiState.Authenticated(it) },
-                    onFailure = { AuthUiState.Error(it.message ?: "Auth request failed") },
+                    onFailure = {
+                        AuthUiState.Error(
+                            it.message ?: context.getString(R.string.auth_error_request_failed)
+                        )
+                    },
                 )
         }
     }
 }
 
 class AuthViewModelFactory(
+    private val context: Context,
     private val repository: AuthRepository,
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return AuthViewModel(
+            context = context,
             loginUseCase = LoginUseCase(repository),
             registerUseCase = RegisterUseCase(repository),
             repository = repository,

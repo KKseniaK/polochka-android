@@ -30,6 +30,22 @@
     <string name="dialog_login_ans">Зарегистрироваться</string>
     <string name="auth_has_account">Уже есть аккаунт?</string>
     <string name="auth_go_login">Войти</string>
+    <string name="auth_error_enter_name">Введите имя</string>
+    <string name="auth_error_enter_email">Введите email</string>
+    <string name="auth_error_enter_password">Введите пароль</string>
+    <string name="auth_error_passwords_do_not_match">Пароли не совпадают</string>
+    <string name="auth_google_login_soon">Вход через Google добавим позже</string>
+    <string name="auth_vk_login_soon">Вход через VK добавим позже</string>
+    <string name="auth_google_registration_soon">Регистрацию через Google добавим позже</string>
+    <string name="auth_vk_registration_soon">Регистрацию через VK добавим позже</string>
+    <string name="auth_password_recovery_soon">Ссылка для восстановления будет отправлена на email</string>
+    <string name="auth_error_empty_response">Сервер вернул пустой ответ</string>
+    <string name="auth_error_check_data">Проверьте введенные данные</string>
+    <string name="auth_error_invalid_credentials">Неверный email или пароль</string>
+    <string name="auth_error_user_exists">Пользователь уже существует</string>
+    <string name="auth_error_server_request_failed">Не удалось выполнить запрос</string>
+    <string name="auth_error_session_expired">Сессия истекла</string>
+    <string name="auth_error_request_failed">Не удалось выполнить вход</string>
 
     <string name="registration_success_title">АККАУНТ СОЗДАН</string>
     <string name="registration_success_subtitle">Теперь настроим Полочку под вас</string>

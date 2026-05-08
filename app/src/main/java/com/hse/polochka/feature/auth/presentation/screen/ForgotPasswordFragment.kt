@@ -18,7 +18,7 @@ class ForgotPasswordFragment : Fragment(R.layout.activity_auth_forgot_password) 
         sendButton.setOnClickListener {
             Toast.makeText(
                 requireContext(),
-                "Ссылка для восстановления будет отправлена на email",
+                getString(R.string.auth_password_recovery_soon),
                 Toast.LENGTH_SHORT
             ).show()
         }
