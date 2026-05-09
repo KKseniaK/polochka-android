@@ -164,8 +164,8 @@
             app:layout_constraintTop_toBottomOf="@id/popularTitleTextView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:listitem="@layout/item_recipe_card"
-            tools:itemCount="2" />
+            tools:listitem="@layout/item_recipe_card_wide"
+            tools:itemCount="8" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

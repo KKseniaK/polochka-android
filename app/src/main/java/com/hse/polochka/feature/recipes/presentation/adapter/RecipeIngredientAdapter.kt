@@ -9,7 +9,7 @@ import com.hse.polochka.databinding.ItemRecipeIngredientBinding
 import com.hse.polochka.feature.recipes.presentation.model.RecipeIngredientUi
 
 class RecipeIngredientAdapter(
-    private val items: List<RecipeIngredientUi>
+    private val items: List<RecipeIngredientUi>,
 ) : RecyclerView.Adapter<RecipeIngredientAdapter.ViewHolder>() {
 
     private var portionCount: Int = 1
@@ -21,7 +21,7 @@ class RecipeIngredientAdapter(
         val binding = ItemRecipeIngredientBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
-            false
+            false,
         )
         return ViewHolder(binding)
     }
@@ -34,13 +34,12 @@ class RecipeIngredientAdapter(
 
         val color = ContextCompat.getColor(
             context,
-            if (item.isAvailable) R.color.button_primary else R.color.storage_last_day
+            if (item.isAvailable) R.color.button_primary else R.color.storage_last_day,
         )
 
         holder.binding.statusImageView.setImageResource(
             if (item.isAvailable) R.drawable.ic_check else R.drawable.ic_close
         )
-
         holder.binding.statusImageView.setColorFilter(color)
 
         holder.binding.nameTextView.text = item.name
@@ -56,10 +55,31 @@ class RecipeIngredientAdapter(
     }
 
     private fun formatAmount(baseAmount: String, portionCount: Int): String {
-        return if (portionCount == 1) {
-            baseAmount
-        } else {
-            "$baseAmount × $portionCount"
+        if (portionCount == 1 || baseAmount.isTasteAmount()) return baseAmount
+
+        var hasNumber = false
+        val scaled = NUMBER_PATTERN.replace(baseAmount) { match ->
+            hasNumber = true
+            val rawNumber = match.value
+            val amount = rawNumber.replace(',', '.').toDoubleOrNull() ?: return@replace rawNumber
+            formatNumber(amount * portionCount)
         }
+        return if (hasNumber) scaled else "$baseAmount x $portionCount"
+    }
+
+    private fun String.isTasteAmount(): Boolean {
+        val normalized = lowercase()
+        return normalized.contains("по вкусу") || normalized.contains("щепот")
+    }
+
+    private companion object {
+        val NUMBER_PATTERN = Regex("""\d+(?:[.,]\d+)?""")
     }
 }
+
+private fun formatNumber(value: Double): String =
+    if (value % 1.0 == 0.0) {
+        value.toInt().toString()
+    } else {
+        String.format(java.util.Locale.US, "%.1f", value).replace('.', ',')
+    }

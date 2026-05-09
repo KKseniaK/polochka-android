@@ -45,20 +45,22 @@ class RecipesFragment : Fragment(R.layout.activity_recipes) {
         binding.canCookRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-        binding.canCookRecyclerView.adapter =
-            RecipeAdapter(recipeRepository.getCanCookRecipes(preferencesStorage.getState())) {
-                openRecipeDetails()
-            }
+        binding.canCookRecyclerView.adapter = RecipeAdapter(
+            items = recipeRepository.getCanCookRecipes(preferencesStorage.getState()),
+            displayMode = RecipeAdapter.DisplayMode.Compact,
+        ) {
+            openRecipeDetails()
+        }
     }
 
     private fun setupPopularRecipes() {
-        binding.popularRecyclerView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
-        binding.popularRecyclerView.adapter =
-            RecipeAdapter(recipeRepository.getPopularRecipes(preferencesStorage.getState())) {
-                openRecipeDetails()
-            }
+        binding.popularRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.popularRecyclerView.adapter = RecipeAdapter(
+            items = recipeRepository.getPopularRecipes(preferencesStorage.getState()),
+            displayMode = RecipeAdapter.DisplayMode.Wide,
+        ) {
+            openRecipeDetails()
+        }
     }
 
     private fun setupClicks() {
@@ -71,7 +73,7 @@ class RecipesFragment : Fragment(R.layout.activity_recipes) {
         }
 
         binding.showAllButton.setOnClickListener {
-            Toast.makeText(requireContext(), "Все рецепты позже", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Все рецепты уже ниже", Toast.LENGTH_SHORT).show()
         }
     }
 

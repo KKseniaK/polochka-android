@@ -3,25 +3,25 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="170dp"
-    android:layout_height="220dp"
-    android:layout_marginEnd="12dp"
-    android:layout_marginBottom="4dp"
+    android:layout_width="match_parent"
+    android:layout_height="136dp"
+    android:layout_marginBottom="12dp"
     app:cardCornerRadius="8dp"
     app:cardElevation="3dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background_primary">
+        android:background="@color/background_primary"
+        android:padding="10dp">
 
         <FrameLayout
             android:id="@+id/imageContainer"
-            android:layout_width="0dp"
-            android:layout_height="96dp"
+            android:layout_width="96dp"
+            android:layout_height="0dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <ImageView
                 android:id="@+id/placeholderIconView"
@@ -29,14 +29,14 @@
                 android:layout_height="match_parent"
                 android:padding="22dp"
                 android:scaleType="centerInside"
-                tools:src="@drawable/ic_cheese" />
+                tools:src="@drawable/ic_pasta" />
 
             <ImageView
                 android:id="@+id/recipeImageView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                tools:src="@drawable/ic_vegetables" />
+                tools:src="@drawable/ic_fish" />
 
         </FrameLayout>
 
@@ -44,11 +44,9 @@
             android:id="@+id/favoriteButton"
             android:layout_width="34dp"
             android:layout_height="34dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="6dp"
             android:background="@drawable/bg_action_button"
             android:padding="7dp"
-            android:src="@drawable/ic_heart_filled"
+            android:src="@drawable/ic_heart"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -56,81 +54,80 @@
             android:id="@+id/titleTextView"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="10dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:textColor="@color/text_primary"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/imageContainer"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imageContainer"
+            app:layout_constraintEnd_toStartOf="@id/favoriteButton"
             tools:text="Паста карбонара" />
 
         <TextView
             android:id="@+id/statusTextView"
             android:layout_width="0dp"
-            android:layout_height="18dp"
-            android:layout_marginHorizontal="10dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/text_secondary"
-            android:textSize="11sp"
+            android:textSize="12sp"
             app:layout_constraintTop_toBottomOf="@id/titleTextView"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imageContainer"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:text="все ингредиенты в наличии" />
+            tools:text="не хватает 3 ингредиентов" />
 
         <TextView
             android:id="@+id/personalizationTextView"
             android:layout_width="0dp"
-            android:layout_height="18dp"
-            android:layout_marginHorizontal="10dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="12dp"
             android:background="@drawable/shape_storage_tag"
             android:ellipsize="end"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:maxLines="1"
-            android:paddingHorizontal="6dp"
-            android:textSize="11sp"
+            android:paddingHorizontal="8dp"
+            android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@id/statusTextView"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/imageContainer"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:text="подходит под ваши вкусы" />
+            tools:text="есть нелюбимые ингредиенты" />
 
         <TextView
             android:id="@+id/timeTextView"
             android:layout_width="wrap_content"
-            android:layout_height="24dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="12dp"
             android:background="@drawable/shape_storage_tag"
             android:gravity="center"
-            android:paddingHorizontal="8dp"
+            android:paddingHorizontal="10dp"
             android:textColor="@color/text_primary"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="30 мин" />
+            app:layout_constraintStart_toEndOf="@id/imageContainer"
+            tools:text="15 мин" />
 
         <TextView
             android:id="@+id/categoryTextView"
             android:layout_width="0dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="10dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="8dp"
             android:background="@drawable/shape_storage_tag"
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1"
-            android:paddingHorizontal="8dp"
+            android:paddingHorizontal="10dp"
             android:textColor="@color/text_primary"
             android:textSize="12sp"
             app:layout_constraintTop_toTopOf="@id/timeTextView"
             app:layout_constraintStart_toEndOf="@id/timeTextView"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:text="завтрак" />
+            tools:text="сытно" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

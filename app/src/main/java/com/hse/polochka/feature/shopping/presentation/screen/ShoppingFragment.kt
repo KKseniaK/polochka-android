@@ -6,6 +6,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hse.polochka.R
+import com.hse.polochka.core.shopping.ShoppingListStorage
+import com.hse.polochka.core.shopping.StoredShoppingItem
 import com.hse.polochka.core.storage_events.StorageEvent
 import com.hse.polochka.core.storage_events.StorageEventStorage
 import com.hse.polochka.databinding.ActivityShoppingBinding
@@ -22,13 +24,10 @@ class ShoppingFragment : Fragment(R.layout.activity_shopping) {
     private var _binding: ActivityShoppingBinding? = null
     private val binding get() = requireNotNull(_binding)
 
-    private val ownShoppingItems = mutableListOf(
-        ShoppingItemUi(1, "Яблоки"),
-        ShoppingItemUi(2, "Макароны"),
-        ShoppingItemUi(3, "Яйца 10 шт.", true),
-    )
+    private val ownShoppingItems = mutableListOf<ShoppingItemUi>()
     private val familyLists = getMockFamilyLists().toMutableList()
     private lateinit var previewAdapter: ShoppingListAdapter
+    private lateinit var shoppingListStorage: ShoppingListStorage
     private lateinit var eventStorage: StorageEventStorage
     private val shoppingPreferences by lazy {
         requireContext().getSharedPreferences("shopping_preferences", android.content.Context.MODE_PRIVATE)
@@ -38,7 +37,9 @@ class ShoppingFragment : Fragment(R.layout.activity_shopping) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = ActivityShoppingBinding.bind(view)
+        shoppingListStorage = ShoppingListStorage(requireContext())
         eventStorage = StorageEventStorage(requireContext())
+        ownShoppingItems.addAll(shoppingListStorage.getItems().map { it.toUi() })
 
         setupMainShoppingList()
         setupFamilyLists()
@@ -57,6 +58,7 @@ class ShoppingFragment : Fragment(R.layout.activity_shopping) {
     }
 
     private fun refreshOwnShoppingPreview() {
+        shoppingListStorage.saveItems(ownShoppingItems.map { it.toStored() })
         previewAdapter.submitItems(ownShoppingItems.take(PREVIEW_ITEMS_LIMIT))
     }
 
@@ -126,7 +128,7 @@ class ShoppingFragment : Fragment(R.layout.activity_shopping) {
                     quantity = 1,
                     estimatedPriceRub = priceForTitle(item.title),
                 )
-            }
+            },
         )
 
         Toast.makeText(
@@ -246,7 +248,7 @@ class ShoppingFragment : Fragment(R.layout.activity_shopping) {
         familyLists[listIndex] = list.copy(
             items = list.items.map { item ->
                 if (item.id == updatedItem.id) updatedItem else item
-            }
+            },
         )
         setupFamilyLists()
     }
@@ -305,6 +307,12 @@ class ShoppingFragment : Fragment(R.layout.activity_shopping) {
                 items = listOf("Молоко", "Сыр", "Хлеб"),
             ),
         )
+
+    private fun StoredShoppingItem.toUi(): ShoppingItemUi =
+        ShoppingItemUi(id = id, title = title, isChecked = isChecked)
+
+    private fun ShoppingItemUi.toStored(): StoredShoppingItem =
+        StoredShoppingItem(id = id, title = title, isChecked = isChecked)
 
     override fun onDestroyView() {
         _binding = null

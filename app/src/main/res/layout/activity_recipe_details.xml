@@ -18,8 +18,9 @@
 
         <ImageView
             android:id="@+id/backButton"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="6dp"
             android:src="@drawable/ic_back"
             android:clickable="true"
             android:focusable="true"
@@ -30,8 +31,9 @@
 
         <ImageView
             android:id="@+id/favoriteButton"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="6dp"
             android:src="@drawable/ic_heart"
             android:clickable="true"
             android:focusable="true"
