@@ -32,11 +32,11 @@ data class StorageProductUi(
 
     val daysLeftText: String
         get() = when {
-            expirationAtMillis == null -> "долго хранится"
+            expirationAtMillis == null -> "срок не указан"
             daysLeft < 0 -> "испорчено"
             daysLeft == 0L -> "осталось: сегодня"
-            daysLeft == 1L -> "осталось: 1дн"
-            else -> "осталось: ${daysLeft}дн"
+            daysLeft == 1L -> "осталось: 1 дн"
+            else -> "осталось: ${daysLeft} дн"
         }
 
     val lifeProgress: Float

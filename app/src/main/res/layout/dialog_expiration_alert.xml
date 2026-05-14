@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_expiration_alert_dialog"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:id="@+id/flameIconContainer"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@drawable/bg_expiration_flame_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/flameIconImageView"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/content_description_expiration_alert"
+                android:src="@drawable/ic_flame" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="12dp"
+            android:textColor="@color/text_primary"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/closeButton"
+            app:layout_constraintStart_toEndOf="@id/flameIconContainer"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/closeButton"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_close"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/text_primary" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/messageTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:lineSpacingExtra="3dp"
+        android:textColor="@color/text_primary"
+        android:textSize="17sp" />
+
+    <Button
+        android:id="@+id/primaryButton"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/shape_button_primary"
+        android:text="@string/expiration_alert_open_storage"
+        android:textAllCaps="false"
+        android:textColor="@color/text_primary"
+        android:textSize="16sp"
+        app:backgroundTint="@null" />
+
+    <Button
+        android:id="@+id/secondaryButton"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shape_expiration_secondary_button"
+        android:text="@string/expiration_alert_later"
+        android:textAllCaps="false"
+        android:textColor="@color/text_primary"
+        android:textSize="16sp"
+        app:backgroundTint="@null" />
+
+</LinearLayout>

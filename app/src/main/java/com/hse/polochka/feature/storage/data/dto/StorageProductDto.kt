@@ -34,3 +34,11 @@ data class StorageEventDto(
     val quantity: Int = 1,
     val estimatedPriceRub: Int = 0,
 )
+
+data class CatalogSuggestionDto(
+    val id: String,
+    val name: String,
+    val tagIds: List<String>,
+    val imageKey: String?,
+    val source: String,
+)

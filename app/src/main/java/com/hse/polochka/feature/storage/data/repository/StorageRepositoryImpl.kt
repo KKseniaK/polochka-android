@@ -5,6 +5,7 @@ import com.hse.polochka.core.network.AuthHeaderProvider
 import com.hse.polochka.core.network.requireBody
 import com.hse.polochka.core.storage_events.StorageEvent
 import com.hse.polochka.core.storage_events.StorageEventStorage
+import com.hse.polochka.feature.storage.data.dto.CatalogSuggestionDto
 import com.hse.polochka.feature.storage.data.dto.CreateStorageProductRequestDto
 import com.hse.polochka.feature.storage.data.dto.StorageEventDto
 import com.hse.polochka.feature.storage.data.dto.StorageProductDto
@@ -23,6 +24,12 @@ class StorageRepositoryImpl(
         storageApi.getProducts(authHeaderProvider.bearer())
             .requireBody()
             .map { it.toUi() }
+
+    override suspend fun searchCatalog(query: String): List<CatalogSuggestionDto> =
+        storageApi.searchCatalog(
+            authorization = authHeaderProvider.bearer(),
+            query = query,
+        ).requireBody()
 
     override suspend fun addProduct(
         name: String,

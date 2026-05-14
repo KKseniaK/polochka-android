@@ -4,6 +4,9 @@ data class ShoppingItemUi(
     val id: Int,
     val title: String,
     val isChecked: Boolean = false,
+    val version: Int = 1,
+    val createdByUserId: String = "",
+    val createdByUserName: String = "",
     val familyActionState: FamilyShoppingActionState = FamilyShoppingActionState.AVAILABLE,
 )
 

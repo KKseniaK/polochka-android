@@ -27,6 +27,10 @@ class PreferencesStorage(context: Context) {
             .apply()
     }
 
+    fun clear() {
+        preferences.edit().clear().apply()
+    }
+
     private fun getStringList(key: String): List<String> =
         preferences.getStringSet(key, emptySet<String>())
             ?.toList()

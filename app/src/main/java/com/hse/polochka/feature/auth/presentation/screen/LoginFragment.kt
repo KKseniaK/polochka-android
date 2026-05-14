@@ -26,6 +26,7 @@ class LoginFragment : Fragment(R.layout.activity_auth_login) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _binding = ActivityAuthLoginBinding.bind(view)
+        (requireActivity() as MainActivity).hideBottomMenu()
         viewModel = createViewModel()
 
         binding.forgotPasswordTextView.setOnClickListener {

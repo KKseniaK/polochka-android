@@ -142,7 +142,7 @@
     <string name="content_description_add_product">Добавить продукт</string>
     <string name="storage_add_product_soon">скоро тут будет функция добавления</string>
     <string name="storage_filter_soon">фильтр тоже будет работать</string>
-    <string name="storage_life_long">долго хранится</string>
+    <string name="storage_life_long">срок не указан</string>
     <string name="storage_expired_label">ИСПОРЧЕНО</string>
     <string name="storage_write_off_selected">Списать выбранное</string>
     <string name="storage_selected_count">Выбрано: %1$d</string>
@@ -246,6 +246,7 @@
     <string name="recipes_search_hint">что вы хотите найти?</string>
     <string name="recipes_can_cook_title">Вы можете приготовить!</string>
     <string name="recipes_popular_title">Популярное</string>
+    <string name="recipes_empty_search">Ничего не нашлось. Попробуйте другой запрос или снимите фильтр.</string>
     <string name="recipes_preference_match">подходит под ваши вкусы</string>
     <string name="recipes_preference_conflict">есть нелюбимые ингредиенты</string>
     <string name="action_show_all">смотреть все</string>
@@ -266,12 +267,20 @@
     <string name="recipe_ingredients_title">Кол-во порций</string>
 
     <!-- главный хаб -->
-    <string name="home_title">Семья VASYAPUP</string>
+    <string name="home_title">Добро пожаловать в полочку!</string>
     <string name="home_expiring_title">Скоро пропадут\n10 продуктов!</string>
+    <string name="home_expiring_empty_title">Скоро пропадут\n0 продуктов</string>
+    <string name="home_expiring_empty_message">Начните добавлять продукты в хранилище, и Полочка подскажет, что лучше использовать первым.</string>
     <string name="home_recipes_title">Приготовить:</string>
+    <string name="home_recipes_empty_message">Когда в хранилище появятся продукты, Полочка предложит, что можно приготовить.</string>
 
     <string name="home_month_stats_title">В этом месяце вы:</string>
     <string name="home_saved_products">Спасли</string>
     <string name="home_products_suffix">продуктов</string>
     <string name="home_saved_money">Сэкономили</string>
+    <string name="home_month_stats_empty_message">Покупайте продукты и отмечайте списания, а Полочка поможет использовать запасы полностью и экономить на покупках.</string>
+    <string name="expiration_alert_title">Полочка волнуется</string>
+    <string name="expiration_alert_open_storage">Перейти в хранилище</string>
+    <string name="expiration_alert_later">Позже</string>
+    <string name="content_description_expiration_alert">Предупреждение о сроках годности</string>
 </resources>

@@ -10,11 +10,11 @@ class ShoppingListStorage(context: Context) {
     private val gson = Gson()
 
     fun getItems(): List<StoredShoppingItem> {
-        val rawItems = preferences.getString(KEY_ITEMS, null) ?: return defaultItems()
+        val rawItems = preferences.getString(KEY_ITEMS, null) ?: return emptyList()
         return runCatching {
             val type = object : TypeToken<List<StoredShoppingItem>>() {}.type
             gson.fromJson<List<StoredShoppingItem>>(rawItems, type)
-        }.getOrDefault(defaultItems())
+        }.getOrDefault(emptyList())
     }
 
     fun saveItems(items: List<StoredShoppingItem>) {
@@ -47,12 +47,9 @@ class ShoppingListStorage(context: Context) {
     private fun nextId(items: List<StoredShoppingItem>): Int =
         (items.maxOfOrNull { it.id } ?: 0) + 1
 
-    private fun defaultItems(): List<StoredShoppingItem> =
-        listOf(
-            StoredShoppingItem(1, "Яблоки"),
-            StoredShoppingItem(2, "Макароны"),
-            StoredShoppingItem(3, "Яйца 10 шт.", isChecked = true),
-        )
+    fun clear() {
+        preferences.edit().clear().apply()
+    }
 
     private companion object {
         const val PREFERENCES_NAME = "shopping_list"

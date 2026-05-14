@@ -14,5 +14,7 @@ data class RecipeUi(
     val personalizedStatus: String? = null,
     val hasPreferenceConflict: Boolean = false,
     val preferenceScore: Int = 0,
-    val isFavorite: Boolean = false
+    val isFavorite: Boolean = false,
+    val missingCount: Int = 0,
+    val hasStorageProducts: Boolean = false,
 )

@@ -5,12 +5,14 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.hse.polochka.MainActivity
 import com.hse.polochka.R
 
 class ForgotPasswordFragment : Fragment(R.layout.activity_auth_forgot_password) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as MainActivity).hideBottomMenu()
 
         val sendButton = view.findViewById<View>(R.id.sendButton)
         val backTextView = view.findViewById<TextView>(R.id.backTextView)

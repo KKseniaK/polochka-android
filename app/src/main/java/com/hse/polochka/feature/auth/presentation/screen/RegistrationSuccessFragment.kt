@@ -17,6 +17,7 @@ class RegistrationSuccessFragment : Fragment(R.layout.activity_registration_succ
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _binding = ActivityRegistrationSuccessBinding.bind(view)
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity() as MainActivity).hideBottomMenu()
 
         binding.startSetupButton.setOnClickListener {
             parentFragmentManager.beginTransaction()

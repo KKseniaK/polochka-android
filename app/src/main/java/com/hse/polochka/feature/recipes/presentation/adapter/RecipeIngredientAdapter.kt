@@ -31,18 +31,28 @@ class RecipeIngredientAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
         val context = holder.binding.root.context
+        val isNeutral = item.kind != "product" || !item.isRequiredForAvailability
 
         val color = ContextCompat.getColor(
             context,
-            if (item.isAvailable) R.color.button_primary else R.color.storage_last_day,
+            when {
+                isNeutral -> R.color.text_primary
+                item.isAvailable -> R.color.button_primary
+                else -> R.color.storage_last_day
+            },
         )
 
-        holder.binding.statusImageView.setImageResource(
-            if (item.isAvailable) R.drawable.ic_check else R.drawable.ic_close
-        )
-        holder.binding.statusImageView.setColorFilter(color)
+        if (isNeutral) {
+            holder.binding.statusImageView.setImageResource(R.drawable.ic_recipe_neutral_dot)
+            holder.binding.statusImageView.clearColorFilter()
+        } else {
+            holder.binding.statusImageView.setImageResource(
+                if (item.isAvailable) R.drawable.ic_check else R.drawable.ic_close
+            )
+            holder.binding.statusImageView.setColorFilter(color)
+        }
 
-        holder.binding.nameTextView.text = item.name
+        holder.binding.nameTextView.text = item.name.capitalizedIngredientName()
         holder.binding.nameTextView.setTextColor(color)
 
         holder.binding.amountTextView.text = formatAmount(item.amountForOnePortion, portionCount)
@@ -72,14 +82,22 @@ class RecipeIngredientAdapter(
         return normalized.contains("по вкусу") || normalized.contains("щепот")
     }
 
+    private fun formatNumber(value: Double): String =
+        if (value % 1.0 == 0.0) {
+            value.toInt().toString()
+        } else {
+            String.format(java.util.Locale.US, "%.1f", value).replace('.', ',')
+        }
+
+    private fun String.capitalizedIngredientName(): String {
+        val trimmed = trim()
+        if (trimmed.isEmpty()) return trimmed
+        return trimmed.replaceFirstChar { firstChar ->
+            if (firstChar.isLowerCase()) firstChar.titlecase() else firstChar.toString()
+        }
+    }
+
     private companion object {
         val NUMBER_PATTERN = Regex("""\d+(?:[.,]\d+)?""")
     }
 }
-
-private fun formatNumber(value: Double): String =
-    if (value % 1.0 == 0.0) {
-        value.toInt().toString()
-    } else {
-        String.format(java.util.Locale.US, "%.1f", value).replace('.', ',')
-    }

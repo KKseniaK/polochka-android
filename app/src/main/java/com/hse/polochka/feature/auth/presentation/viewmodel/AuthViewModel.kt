@@ -46,6 +46,13 @@ class AuthViewModel(
         }
     }
 
+    fun hasToken(): Boolean = repository.hasToken()
+
+    fun logout() {
+        repository.logout()
+        _state.value = AuthUiState.Idle
+    }
+
     fun resetState() {
         _state.value = AuthUiState.Idle
     }

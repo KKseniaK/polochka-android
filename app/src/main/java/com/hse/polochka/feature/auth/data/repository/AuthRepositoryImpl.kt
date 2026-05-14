@@ -3,7 +3,11 @@ package com.hse.polochka.feature.auth.data.repository
 import android.content.Context
 import com.google.gson.Gson
 import com.hse.polochka.R
+import com.hse.polochka.core.family.FamilyStorage
+import com.hse.polochka.core.preferences.PreferencesStorage
+import com.hse.polochka.core.shopping.ShoppingListStorage
 import com.hse.polochka.core.storage.UserSessionStorage
+import com.hse.polochka.core.storage_events.StorageEventStorage
 import com.hse.polochka.feature.auth.data.dto.ErrorResponseDto
 import com.hse.polochka.feature.auth.data.dto.LoginRequestDto
 import com.hse.polochka.feature.auth.data.dto.RegisterRequestDto
@@ -36,10 +40,12 @@ class AuthRepositoryImpl(
 
         return runCatching {
             val response = authApi.register(request).requireBody()
+            clearUserLocalCache()
             sessionStorage.saveToken(response.token)
             response.user.toDomain()
         }.getOrElse { error ->
             if (error is IOException) {
+                clearUserLocalCache()
                 createLocalSession(cleanEmail, cleanDisplayName.ifBlank { LOCAL_TEST_NAME })
             } else {
                 throw error
@@ -60,6 +66,7 @@ class AuthRepositoryImpl(
                     password = password,
                 )
             ).requireBody()
+            clearUserLocalCache()
             sessionStorage.saveToken(response.token)
             response.user.toDomain()
         }.getOrElse { error ->
@@ -88,6 +95,14 @@ class AuthRepositoryImpl(
 
     override fun logout() {
         sessionStorage.clear()
+        clearUserLocalCache()
+    }
+
+    private fun clearUserLocalCache() {
+        PreferencesStorage(context).clear()
+        FamilyStorage(context).clear()
+        ShoppingListStorage(context).clear()
+        StorageEventStorage(context).clear()
     }
 
     private fun <T> Response<T>.requireBody(): T {

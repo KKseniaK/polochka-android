@@ -41,7 +41,6 @@ class AnalyticsRepositoryImpl(
 
     private fun buildLocalSummary(month: String): AnalyticsSummary {
         val events = eventStorage.getEvents()
-            .ifEmpty { sampleEvents() }
             .filter { it.isInMonth(month) }
         val boughtEvents = events.filter { it.eventType in BOUGHT_EVENT_TYPES }
         val usedEvents = events.filter { it.eventType == EVENT_USED }
@@ -161,7 +160,7 @@ class AnalyticsRepositoryImpl(
         val events = champion?.value.orEmpty()
         return AnalyticsChampion(
             userId = champion?.key.orEmpty().ifBlank { LOCAL_USER_ID },
-            displayName = events.firstOrNull()?.userName.orEmpty().ifBlank { "Папа" },
+            displayName = events.firstOrNull()?.userName.orEmpty().ifBlank { "Вы" },
             purchasesCount = events.sumOf { it.quantity.safeQuantity() },
         )
     }

@@ -4,13 +4,17 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hse.polochka.R
-import com.hse.polochka.core.shopping.ShoppingListStorage
-import com.hse.polochka.core.shopping.StoredShoppingItem
-import com.hse.polochka.core.storage_events.StorageEvent
-import com.hse.polochka.core.storage_events.StorageEventStorage
+import com.hse.polochka.core.network.ApiClient
+import com.hse.polochka.core.network.AuthHeaderProvider
+import com.hse.polochka.core.storage.UserSessionStorage
 import com.hse.polochka.databinding.ActivityShoppingBinding
+import com.hse.polochka.feature.auth.data.remote.AuthApi
+import com.hse.polochka.feature.shopping.data.remote.ShoppingApi
+import com.hse.polochka.feature.shopping.data.repository.ShoppingConflictException
+import com.hse.polochka.feature.shopping.data.repository.ShoppingRepositoryImpl
 import com.hse.polochka.feature.shopping.presentation.adapter.FamilyShoppingListAdapter
 import com.hse.polochka.feature.shopping.presentation.adapter.ShoppingHistoryAdapter
 import com.hse.polochka.feature.shopping.presentation.adapter.ShoppingListAdapter
@@ -18,6 +22,7 @@ import com.hse.polochka.feature.shopping.presentation.model.FamilyShoppingAction
 import com.hse.polochka.feature.shopping.presentation.model.FamilyShoppingListUi
 import com.hse.polochka.feature.shopping.presentation.model.ShoppingHistoryUi
 import com.hse.polochka.feature.shopping.presentation.model.ShoppingItemUi
+import kotlinx.coroutines.launch
 
 class ShoppingFragment : Fragment(R.layout.activity_shopping) {
 
@@ -25,10 +30,12 @@ class ShoppingFragment : Fragment(R.layout.activity_shopping) {
     private val binding get() = requireNotNull(_binding)
 
     private val ownShoppingItems = mutableListOf<ShoppingItemUi>()
-    private val familyLists = getMockFamilyLists().toMutableList()
+    private val familyLists = mutableListOf<FamilyShoppingListUi>()
+    private var historyItems = emptyList<ShoppingHistoryUi>()
+    private var currentUserId: String = ""
+
+    private lateinit var repository: ShoppingRepositoryImpl
     private lateinit var previewAdapter: ShoppingListAdapter
-    private lateinit var shoppingListStorage: ShoppingListStorage
-    private lateinit var eventStorage: StorageEventStorage
     private val shoppingPreferences by lazy {
         requireContext().getSharedPreferences("shopping_preferences", android.content.Context.MODE_PRIVATE)
     }
@@ -37,14 +44,17 @@ class ShoppingFragment : Fragment(R.layout.activity_shopping) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = ActivityShoppingBinding.bind(view)
-        shoppingListStorage = ShoppingListStorage(requireContext())
-        eventStorage = StorageEventStorage(requireContext())
-        ownShoppingItems.addAll(shoppingListStorage.getItems().map { it.toUi() })
+        repository = ShoppingRepositoryImpl(
+            shoppingApi = ApiClient.create(ShoppingApi::class.java),
+            authApi = ApiClient.create(AuthApi::class.java),
+            authHeaderProvider = AuthHeaderProvider(UserSessionStorage(requireContext())),
+        )
 
         setupMainShoppingList()
-        setupFamilyLists()
-        setupHistory()
         setupClicks()
+        renderFamilyLists()
+        renderHistory()
+        loadShoppingData()
     }
 
     private fun setupMainShoppingList() {
@@ -57,12 +67,87 @@ class ShoppingFragment : Fragment(R.layout.activity_shopping) {
         binding.shoppingListRecyclerView.adapter = previewAdapter
     }
 
-    private fun refreshOwnShoppingPreview() {
-        shoppingListStorage.saveItems(ownShoppingItems.map { it.toStored() })
+    private fun setupClicks() {
+        binding.mainShoppingCard.setOnClickListener {
+            ShoppingListDialogFragment.newInstance(
+                title = getString(R.string.shopping_list_title),
+                items = ownShoppingItems,
+                mode = ShoppingListDialogFragment.Mode.OWN,
+            ).apply {
+                onAddItem = ::addShoppingItem
+                onCheckChanged = { item, isChecked ->
+                    updateShoppingItem(item, isChecked)
+                    true
+                }
+                onDeleteItem = { item ->
+                    deleteShoppingItem(item, REASON_NOT_NEEDED)
+                    true
+                }
+                onDeleteBoughtToStorage = { item ->
+                    deleteShoppingItem(item, REASON_BOUGHT_TO_STORAGE)
+                }
+                onMoveBoughtToStorage = ::moveBoughtItemsToStorage
+                askBeforeDelete = shoppingPreferences.getBoolean(KEY_ASK_BEFORE_DELETE, true)
+                onRememberDeleteChoiceChanged = { shouldAsk ->
+                    shoppingPreferences.edit().putBoolean(KEY_ASK_BEFORE_DELETE, shouldAsk).apply()
+                }
+            }.show(parentFragmentManager, "shopping_list")
+        }
+    }
+
+    private fun loadShoppingData() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            runCatching {
+                currentUserId = repository.currentUserId()
+                val items = repository.getItems()
+                historyItems = repository.getHistory()
+                applyShoppingItems(items)
+            }.onFailure {
+                currentUserId = ""
+                ownShoppingItems.clear()
+                familyLists.clear()
+                historyItems = emptyList()
+                renderAll()
+                Toast.makeText(requireContext(), "Не получилось загрузить список покупок", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun applyShoppingItems(items: List<ShoppingItemUi>) {
+        ownShoppingItems.clear()
+        ownShoppingItems.addAll(items.filter { it.createdByUserId == currentUserId })
+
+        familyLists.clear()
+        familyLists.addAll(
+            items
+                .filter { it.createdByUserId != currentUserId }
+                .groupBy { it.createdByUserId }
+                .values
+                .mapIndexed { index, memberItems ->
+                    val first = memberItems.first()
+                    FamilyShoppingListUi(
+                        id = index + 1,
+                        ownerUserId = first.createdByUserId,
+                        ownerName = first.createdByUserName.ifBlank { "Участник" },
+                        items = memberItems,
+                    )
+                }
+        )
+
+        renderAll()
+    }
+
+    private fun renderAll() {
+        renderOwnPreview()
+        renderFamilyLists()
+        renderHistory()
+    }
+
+    private fun renderOwnPreview() {
         previewAdapter.submitItems(ownShoppingItems.take(PREVIEW_ITEMS_LIMIT))
     }
 
-    private fun setupFamilyLists() {
+    private fun renderFamilyLists() {
         binding.familyListsRecyclerView.visibility =
             if (familyLists.isEmpty()) View.GONE else View.VISIBLE
         binding.noFamilyListsTextView.visibility =
@@ -77,150 +162,171 @@ class ShoppingFragment : Fragment(R.layout.activity_shopping) {
                     .newInstance(list)
                     .apply {
                         onBuyItem = { item, isChecked ->
-                            markFamilyItemBought(list.id, item, isChecked)
+                            markFamilyItemBought(item, isChecked)
                         }
                     }
                     .show(parentFragmentManager, "family_shopping_list")
             }
     }
 
-    private fun setupHistory() {
+    private fun renderHistory() {
         binding.historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.historyRecyclerView.adapter =
-            ShoppingHistoryAdapter(getMockHistory()) { history ->
+            ShoppingHistoryAdapter(historyItems) { history ->
                 ShoppingHistoryDialogFragment
                     .newInstance(history)
                     .show(parentFragmentManager, "shopping_history")
             }
     }
 
-    private fun setupClicks() {
-        binding.mainShoppingCard.setOnClickListener {
-            ShoppingListDialogFragment.newInstance(
-                title = getString(R.string.shopping_list_title),
-                items = ownShoppingItems,
-                mode = ShoppingListDialogFragment.Mode.OWN,
-            ).apply {
-                onItemsChanged = ::updateOwnShoppingItems
-                onCheckChanged = ::updateOwnShoppingItemChecked
-                onDeleteItem = ::deleteOwnShoppingItem
-                onMoveBoughtToStorage = ::moveBoughtItemsToStorage
-                askBeforeDelete = shoppingPreferences.getBoolean(KEY_ASK_BEFORE_DELETE, true)
-                onRememberDeleteChoiceChanged = { shouldAsk ->
-                    shoppingPreferences.edit().putBoolean(KEY_ASK_BEFORE_DELETE, shouldAsk).apply()
+    private fun addShoppingItem(title: String) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            runCatching { repository.addItem(title) }
+                .onSuccess { loadShoppingData() }
+                .onFailure {
+                    Toast.makeText(requireContext(), "Не получилось добавить продукт", Toast.LENGTH_SHORT).show()
+                    loadShoppingData()
                 }
-            }.show(parentFragmentManager, "shopping_list")
+        }
+    }
+
+    private fun updateShoppingItem(item: ShoppingItemUi, isChecked: Boolean) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            runCatching { repository.updateItem(item, isChecked) }
+                .onSuccess { loadShoppingData() }
+                .onFailure { error ->
+                    handleShoppingError(error, item)
+                    loadShoppingData()
+                }
+        }
+    }
+
+    private fun deleteShoppingItem(item: ShoppingItemUi, reason: String) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            runCatching { repository.deleteItem(item, reason) }
+                .onSuccess { loadShoppingData() }
+                .onFailure { error ->
+                    handleShoppingError(error, item)
+                    loadShoppingData()
+                }
         }
     }
 
     private fun moveBoughtItemsToStorage(items: List<ShoppingItemUi>) {
         if (items.isEmpty()) return
 
-        eventStorage.addEvents(
-            items.map { item ->
-                StorageEvent(
-                    productId = item.id,
-                    eventType = EVENT_BOUGHT,
-                    happenedAtMillis = System.currentTimeMillis(),
-                    reason = "shopping",
-                    productName = item.title,
-                    category = categoryForTitle(item.title),
-                    quantity = 1,
-                    estimatedPriceRub = priceForTitle(item.title),
-                )
-            },
-        )
-
-        Toast.makeText(
-            requireContext(),
-            getString(R.string.shopping_moved_to_storage, items.size),
-            Toast.LENGTH_SHORT,
-        ).show()
-    }
-
-    private fun categoryForTitle(title: String): String {
-        val normalized = title.lowercase()
-        return when {
-            "мол" in normalized || "сыр" in normalized || "йогурт" in normalized -> "Молочка"
-            "яй" in normalized || "хлеб" in normalized || "макарон" in normalized -> "База"
-            "яблок" in normalized || "помидор" in normalized || "манго" in normalized -> "Овощи/фрукты"
-            else -> "Другое"
+        viewLifecycleOwner.lifecycleScope.launch {
+            runCatching { repository.moveToStorage(items) }
+                .onSuccess {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.shopping_moved_to_storage, items.size),
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                    loadShoppingData()
+                }
+                .onFailure {
+                    Toast.makeText(requireContext(), "Не получилось перенести в хранилище", Toast.LENGTH_SHORT).show()
+                    loadShoppingData()
+                }
         }
     }
 
-    private fun priceForTitle(title: String): Int {
-        val normalized = title.lowercase()
-        return when {
-            "сыр" in normalized -> 280
-            "мол" in normalized -> 110
-            "яй" in normalized -> 160
-            "хлеб" in normalized -> 70
-            "манго" in normalized -> 240
-            else -> 120
-        }
-    }
-
-    private fun updateOwnShoppingItems(updatedItems: List<ShoppingItemUi>) {
-        ownShoppingItems.clear()
-        ownShoppingItems.addAll(updatedItems)
-        refreshOwnShoppingPreview()
-    }
-
-    private fun updateOwnShoppingItemChecked(item: ShoppingItemUi, isChecked: Boolean): Boolean {
-        val index = ownShoppingItems.indexOfFirst { it.id == item.id }
-        if (index >= 0) {
-            ownShoppingItems[index] = ownShoppingItems[index].copy(isChecked = isChecked)
-            refreshOwnShoppingPreview()
-        }
-        return true
-    }
-
-    private fun deleteOwnShoppingItem(item: ShoppingItemUi): Boolean {
-        val index = ownShoppingItems.indexOfFirst { it.id == item.id }
-        if (index >= 0) {
-            ownShoppingItems.removeAt(index)
-            refreshOwnShoppingPreview()
-        }
-        return true
-    }
-
-    private fun markFamilyItemBought(listId: Int, item: ShoppingItemUi, isChecked: Boolean): Boolean {
+    private fun markFamilyItemBought(item: ShoppingItemUi, isChecked: Boolean): Boolean {
         if (!isChecked) return true
 
         return when (item.familyActionState) {
             FamilyShoppingActionState.AVAILABLE -> {
-                updateFamilyItem(listId, item.copy(isChecked = true))
+                updateShoppingItem(item, true)
                 true
             }
             FamilyShoppingActionState.ALREADY_DELETED_BY_OWNER -> {
                 showConflictWithStorageChoice(
-                    title = getString(R.string.shopping_conflict_deleted_title),
-                    message = getString(R.string.shopping_conflict_deleted_message, item.title),
+                    title = "Уже удалили",
+                    message = deletedConflictMessage(item),
                     item = item,
                 )
                 false
             }
             FamilyShoppingActionState.ALREADY_BOUGHT_BY_OWNER -> {
                 showConflictWithStorageChoice(
-                    title = getString(R.string.shopping_conflict_bought_by_owner_title),
-                    message = getString(R.string.shopping_conflict_bought_by_owner_message, item.title),
+                    title = "Уже купили",
+                    message = boughtConflictMessage(item),
                     item = item,
                 )
                 false
             }
             FamilyShoppingActionState.ALREADY_BOUGHT_BY_YOU -> {
                 showConflict(
-                    title = getString(R.string.shopping_conflict_bought_by_you_title),
-                    message = getString(R.string.shopping_conflict_bought_by_you_message),
+                    title = "Вы уже отмечали",
+                    message = "Эта покупка уже была отмечена с вашей стороны.",
                 )
                 false
             }
         }
     }
 
+    private fun handleShoppingError(error: Throwable, fallbackItem: ShoppingItemUi) {
+        if (error is ShoppingConflictException) {
+            val item = error.item ?: fallbackItem
+            when (error.code) {
+                "deleted_by_owner" -> showConflictWithStorageChoice(
+                    title = "Уже удалили",
+                    message = deletedConflictMessage(item),
+                    item = item,
+                )
+                "bought_by_owner" -> showConflictWithStorageChoice(
+                    title = "Уже купили",
+                    message = boughtConflictMessage(item),
+                    item = item,
+                )
+                "bought_by_you" -> showConflict(
+                    title = "Вы уже отмечали",
+                    message = "Эта покупка уже была отмечена с вашей стороны.",
+                )
+                else -> handleStateConflict(item)
+            }
+        } else {
+            Toast.makeText(requireContext(), "Не получилось обновить список покупок", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun handleStateConflict(item: ShoppingItemUi) {
+        when (item.familyActionState) {
+            FamilyShoppingActionState.ALREADY_DELETED_BY_OWNER -> showConflictWithStorageChoice(
+                title = "Уже удалили",
+                message = deletedConflictMessage(item),
+                item = item,
+            )
+            FamilyShoppingActionState.ALREADY_BOUGHT_BY_OWNER -> showConflictWithStorageChoice(
+                title = "Уже купили",
+                message = boughtConflictMessage(item),
+                item = item,
+            )
+            FamilyShoppingActionState.ALREADY_BOUGHT_BY_YOU -> showConflict(
+                title = "Вы уже отмечали",
+                message = "Эта покупка уже была отмечена с вашей стороны.",
+            )
+            FamilyShoppingActionState.AVAILABLE -> showConflict(
+                title = "Список обновился",
+                message = "Данные списка изменились. Попробуйте действие ещё раз.",
+            )
+        }
+    }
+
+    private fun deletedConflictMessage(item: ShoppingItemUi): String =
+        "${item.createdByUserName.ifBlank { "Участник семьи" }} уже удалил ${item.title} у себя в списке. Вы уже купили?"
+
+    private fun boughtConflictMessage(item: ShoppingItemUi): String =
+        "${item.createdByUserName.ifBlank { "Участник семьи" }} уже купил ${item.title}. Вы тоже уже купили?"
+
     private fun showConflict(title: String, message: String) {
         ShoppingConflictDialogFragment
-            .newInstance(title, message)
+            .newInstance(
+                title = title,
+                message = message,
+                primaryText = "Понятно",
+            )
             .show(parentFragmentManager, "shopping_conflict")
     }
 
@@ -240,80 +346,6 @@ class ShoppingFragment : Fragment(R.layout.activity_shopping) {
             .show(parentFragmentManager, "shopping_conflict_choice")
     }
 
-    private fun updateFamilyItem(listId: Int, updatedItem: ShoppingItemUi) {
-        val listIndex = familyLists.indexOfFirst { it.id == listId }
-        if (listIndex == -1) return
-
-        val list = familyLists[listIndex]
-        familyLists[listIndex] = list.copy(
-            items = list.items.map { item ->
-                if (item.id == updatedItem.id) updatedItem else item
-            },
-        )
-        setupFamilyLists()
-    }
-
-    private fun getMockFamilyLists(): List<FamilyShoppingListUi> =
-        listOf(
-            FamilyShoppingListUi(
-                id = 1,
-                ownerName = "мама",
-                items = listOf(
-                    ShoppingItemUi(1, "Молоко"),
-                    ShoppingItemUi(2, "Яйца 10 шт.", true),
-                    ShoppingItemUi(3, "Манго"),
-                ),
-            ),
-            FamilyShoppingListUi(
-                id = 2,
-                ownerName = "папа",
-                items = listOf(
-                    ShoppingItemUi(
-                        id = 4,
-                        title = "Хлеб",
-                        familyActionState = FamilyShoppingActionState.ALREADY_DELETED_BY_OWNER,
-                    ),
-                    ShoppingItemUi(
-                        id = 5,
-                        title = "Сыр",
-                        familyActionState = FamilyShoppingActionState.ALREADY_BOUGHT_BY_OWNER,
-                    ),
-                ),
-            ),
-            FamilyShoppingListUi(
-                id = 3,
-                ownerName = "сестра",
-                items = listOf(
-                    ShoppingItemUi(6, "Помидоры"),
-                    ShoppingItemUi(
-                        id = 7,
-                        title = "Кофе",
-                        familyActionState = FamilyShoppingActionState.ALREADY_BOUGHT_BY_YOU,
-                    ),
-                ),
-            ),
-        )
-
-    private fun getMockHistory(): List<ShoppingHistoryUi> =
-        listOf(
-            ShoppingHistoryUi(
-                id = 1,
-                date = "06.04.26",
-                items = listOf("Яблоки", "Помидоры 6 шт.", "Макароны"),
-            ),
-            ShoppingHistoryUi(
-                id = 2,
-                date = "02.04.26",
-                items = listOf("Молоко", "Сыр", "Хлеб"),
-            ),
-        )
-
-    private fun StoredShoppingItem.toUi(): ShoppingItemUi =
-        ShoppingItemUi(id = id, title = title, isChecked = isChecked)
-
-    private fun ShoppingItemUi.toStored(): StoredShoppingItem =
-        StoredShoppingItem(id = id, title = title, isChecked = isChecked)
-
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
@@ -322,6 +354,7 @@ class ShoppingFragment : Fragment(R.layout.activity_shopping) {
     private companion object {
         const val PREVIEW_ITEMS_LIMIT = 3
         const val KEY_ASK_BEFORE_DELETE = "ask_before_delete"
-        const val EVENT_BOUGHT = "bought"
+        const val REASON_NOT_NEEDED = "not_needed"
+        const val REASON_BOUGHT_TO_STORAGE = "bought_to_storage"
     }
 }

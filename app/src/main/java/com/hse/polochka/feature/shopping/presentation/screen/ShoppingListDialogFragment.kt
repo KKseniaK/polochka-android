@@ -19,8 +19,10 @@ class ShoppingListDialogFragment : DialogFragment() {
     }
 
     var onItemsChanged: ((List<ShoppingItemUi>) -> Unit)? = null
+    var onAddItem: ((String) -> Unit)? = null
     var onCheckChanged: ((ShoppingItemUi, Boolean) -> Boolean)? = null
     var onDeleteItem: ((ShoppingItemUi) -> Boolean)? = null
+    var onDeleteBoughtToStorage: ((ShoppingItemUi) -> Unit)? = null
     var onMoveBoughtToStorage: ((List<ShoppingItemUi>) -> Unit)? = null
     var askBeforeDelete: Boolean = true
     var onRememberDeleteChoiceChanged: ((Boolean) -> Unit)? = null
@@ -72,6 +74,7 @@ class ShoppingListDialogFragment : DialogFragment() {
 
         binding.shoppingRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.shoppingRecyclerView.adapter = adapter
+        limitListHeightIfNeeded()
 
         binding.closeButton.setOnClickListener {
             notifyItemsChanged()
@@ -82,6 +85,7 @@ class ShoppingListDialogFragment : DialogFragment() {
             val text = binding.inputEditText.text.toString().trim()
             if (text.isNotEmpty()) {
                 adapter.addItem(text)
+                onAddItem?.invoke(text)
                 binding.inputEditText.text?.clear()
                 notifyItemsChanged()
                 updateMoveToStorageButton()
@@ -93,10 +97,7 @@ class ShoppingListDialogFragment : DialogFragment() {
             if (boughtItems.isEmpty()) return@setOnClickListener
 
             onMoveBoughtToStorage?.invoke(boughtItems)
-            val updatedItems = adapter.currentItems().filterNot { it.isChecked }
-            adapter.submitItems(updatedItems)
-            notifyItemsChanged()
-            updateMoveToStorageButton()
+            dismiss()
         }
 
         updateMoveToStorageButton()
@@ -108,13 +109,15 @@ class ShoppingListDialogFragment : DialogFragment() {
         dialog?.window?.apply {
             setBackgroundDrawableResource(android.R.color.transparent)
             val margin = (24 * resources.displayMetrics.density).toInt()
-            val height = if (items.size <= 5) {
-                ViewGroup.LayoutParams.WRAP_CONTENT
-            } else {
-                (resources.displayMetrics.heightPixels * 0.78).toInt()
-            }
+            setLayout(resources.displayMetrics.widthPixels - margin * 2, ViewGroup.LayoutParams.WRAP_CONTENT)
+        }
+    }
 
-            setLayout(resources.displayMetrics.widthPixels - margin * 2, height)
+    private fun limitListHeightIfNeeded() {
+        if (items.size <= MAX_VISIBLE_ITEMS_WITHOUT_SCROLL) return
+
+        binding.shoppingRecyclerView.layoutParams = binding.shoppingRecyclerView.layoutParams.apply {
+            height = (resources.displayMetrics.heightPixels * 0.42).toInt()
         }
     }
 
@@ -140,7 +143,11 @@ class ShoppingListDialogFragment : DialogFragment() {
                     if (shouldRemember) {
                         onRememberDeleteChoiceChanged?.invoke(false)
                     }
-                    onMoveBoughtToStorage?.invoke(listOf(item))
+                    if (onDeleteBoughtToStorage == null) {
+                        onMoveBoughtToStorage?.invoke(listOf(item))
+                    } else {
+                        onDeleteBoughtToStorage?.invoke(item)
+                    }
                     removeItemFromDialog(item)
                 }
                 onNotNeededClick = { shouldRemember ->
@@ -174,6 +181,8 @@ class ShoppingListDialogFragment : DialogFragment() {
     }
 
     companion object {
+        private const val MAX_VISIBLE_ITEMS_WITHOUT_SCROLL = 6
+
         fun newInstance(
             title: String,
             items: List<ShoppingItemUi>,

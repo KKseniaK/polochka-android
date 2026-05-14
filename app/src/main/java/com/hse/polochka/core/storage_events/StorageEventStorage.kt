@@ -24,6 +24,10 @@ class StorageEventStorage(context: Context) {
         }.getOrDefault(emptyList())
     }
 
+    fun clear() {
+        preferences.edit().clear().apply()
+    }
+
     companion object {
         private const val PREFERENCES_NAME = "storage_events"
         private const val KEY_EVENTS = "events"

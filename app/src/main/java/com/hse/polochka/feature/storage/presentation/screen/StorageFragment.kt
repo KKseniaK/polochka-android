@@ -4,14 +4,21 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hse.polochka.R
-import com.hse.polochka.core.storage_events.StorageEvent
+import com.hse.polochka.core.network.ApiClient
+import com.hse.polochka.core.network.AuthHeaderProvider
+import com.hse.polochka.core.storage.UserSessionStorage
 import com.hse.polochka.core.storage_events.StorageEventStorage
 import com.hse.polochka.databinding.ActivityStorageBinding
+import com.hse.polochka.feature.storage.data.remote.StorageApi
+import com.hse.polochka.feature.storage.data.repository.StorageRepositoryImpl
+import com.hse.polochka.feature.storage.domain.repository.StorageRepository
 import com.hse.polochka.feature.storage.presentation.adapter.StorageAdapter
 import com.hse.polochka.feature.storage.presentation.model.StorageProductUi
 import com.hse.polochka.feature.storage.presentation.model.WriteOffResult
+import kotlinx.coroutines.launch
 
 class StorageFragment : Fragment(R.layout.activity_storage) {
 
@@ -19,7 +26,7 @@ class StorageFragment : Fragment(R.layout.activity_storage) {
     private val binding get() = requireNotNull(_binding)
 
     private lateinit var storageAdapter: StorageAdapter
-    private lateinit var eventStorage: StorageEventStorage
+    private lateinit var storageRepository: StorageRepository
     private val selectedProductIds = mutableSetOf<Int>()
     private var products = emptyList<StorageProductUi>()
 
@@ -27,17 +34,21 @@ class StorageFragment : Fragment(R.layout.activity_storage) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = ActivityStorageBinding.bind(view)
-        eventStorage = StorageEventStorage(requireContext())
-        products = getMockProducts()
+        storageRepository = StorageRepositoryImpl(
+            storageApi = ApiClient.create(StorageApi::class.java),
+            eventStorage = StorageEventStorage(requireContext()),
+            authHeaderProvider = AuthHeaderProvider(UserSessionStorage(requireContext())),
+        )
 
         setupProductsList()
         setupClickListeners()
         updateBulkActionBar()
+        loadProducts()
     }
 
     private fun setupProductsList() {
         storageAdapter = StorageAdapter(
-            items = products.filterNot { it.isWrittenOff },
+            items = products,
             selectedIds = selectedProductIds,
             onSelectionChanged = {
                 updateBulkActionBar()
@@ -55,8 +66,10 @@ class StorageFragment : Fragment(R.layout.activity_storage) {
 
     private fun setupClickListeners() {
         binding.addProductButton.setOnClickListener {
-            AddProductDialogFragment()
-                .show(parentFragmentManager, "add_product")
+            AddProductDialogFragment().apply {
+                searchCatalog = storageRepository::searchCatalog
+                onProductCreated = ::addProduct
+            }.show(parentFragmentManager, "add_product")
         }
 
         binding.filterButton.setOnClickListener {
@@ -73,6 +86,49 @@ class StorageFragment : Fragment(R.layout.activity_storage) {
 
         binding.selectAllButton.setOnClickListener {
             toggleSelectAllProducts()
+        }
+    }
+
+    private fun loadProducts() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            runCatching { storageRepository.getProducts() }
+                .onSuccess { loadedProducts ->
+                    products = loadedProducts
+                    selectedProductIds.clear()
+                    submitActiveProducts()
+                    updateBulkActionBar()
+                }
+                .onFailure {
+                    products = emptyList()
+                    selectedProductIds.clear()
+                    submitActiveProducts()
+                    updateBulkActionBar()
+                    Toast.makeText(requireContext(), "Не получилось загрузить хранилище", Toast.LENGTH_SHORT).show()
+                }
+        }
+    }
+
+    private fun addProduct(
+        name: String,
+        amount: String,
+        tagIds: List<String>,
+        expirationAtMillis: Long?,
+    ) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            runCatching {
+                storageRepository.addProduct(
+                    name = name,
+                    amount = amount,
+                    tagIds = tagIds,
+                    expirationAtMillis = expirationAtMillis,
+                )
+            }.onSuccess { createdProduct ->
+                products = products + createdProduct
+                submitActiveProducts()
+                Toast.makeText(requireContext(), "Продукт добавлен", Toast.LENGTH_SHORT).show()
+            }.onFailure {
+                Toast.makeText(requireContext(), "Не получилось добавить продукт", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -116,39 +172,35 @@ class StorageFragment : Fragment(R.layout.activity_storage) {
     private fun writeOffSelectedProducts(results: List<WriteOffResult>) {
         if (results.isEmpty()) return
 
-        val now = System.currentTimeMillis()
-        val idsToWriteOff = results.map { it.productId }.toSet()
-        products = products.map { product ->
-            if (product.id in idsToWriteOff) {
-                product.copy(isWrittenOff = true)
+        viewLifecycleOwner.lifecycleScope.launch {
+            val failed = results.count { result ->
+                runCatching {
+                    storageRepository.writeOffProduct(result.productId, result.reason)
+                }.isFailure
+            }
+
+            if (failed == 0) {
+                val idsToWriteOff = results.map { it.productId }.toSet()
+                products = products.map { product ->
+                    if (product.id in idsToWriteOff) {
+                        product.copy(isWrittenOff = true)
+                    } else {
+                        product
+                    }
+                }
+                selectedProductIds.clear()
+                submitActiveProducts()
+                updateBulkActionBar()
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.storage_written_off, idsToWriteOff.size),
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
-                product
+                Toast.makeText(requireContext(), "Не получилось списать часть продуктов", Toast.LENGTH_SHORT).show()
+                loadProducts()
             }
         }
-        eventStorage.addEvents(
-            results.map { result ->
-                val product = products.firstOrNull { it.id == result.productId }
-                StorageEvent(
-                    productId = result.productId,
-                    eventType = getString(R.string.storage_event_used),
-                    happenedAtMillis = now,
-                    reason = result.reason,
-                    productName = product?.name.orEmpty(),
-                    category = product?.tags?.firstOrNull().orEmpty(),
-                    quantity = 1,
-                    estimatedPriceRub = 120,
-                )
-            }
-        )
-
-        selectedProductIds.clear()
-        submitActiveProducts()
-        updateBulkActionBar()
-        Toast.makeText(
-            requireContext(),
-            getString(R.string.storage_written_off, idsToWriteOff.size),
-            Toast.LENGTH_SHORT
-        ).show()
     }
 
     private fun submitActiveProducts() {
@@ -163,59 +215,6 @@ class StorageFragment : Fragment(R.layout.activity_storage) {
     }
 
     private fun getActiveProducts(): List<StorageProductUi> = products.filterNot { it.isWrittenOff }
-
-    private fun getMockProducts(): List<StorageProductUi> {
-        val today = System.currentTimeMillis()
-        return listOf(
-            StorageProductUi(
-                id = 1,
-                name = "Йогурт Epica",
-                amount = "5 шт.",
-                tags = listOf("молочка", "быстро портящийся"),
-                imageResId = R.drawable.ic_milk,
-                addedAtMillis = today - days(4),
-                expirationAtMillis = today + days(1),
-            ),
-            StorageProductUi(
-                id = 2,
-                name = "Молоко Parmalat",
-                amount = "1 шт.",
-                tags = listOf("молочка", "быстро портящийся"),
-                imageResId = R.drawable.ic_milk,
-                addedAtMillis = today - days(2),
-                expirationAtMillis = today + days(4),
-            ),
-            StorageProductUi(
-                id = 3,
-                name = "Сыр",
-                amount = "2 шт.",
-                tags = listOf("молочка", "сыр"),
-                imageResId = R.drawable.ic_cheese,
-                addedAtMillis = today - days(3),
-                expirationAtMillis = today + days(10),
-            ),
-            StorageProductUi(
-                id = 4,
-                name = "Рис",
-                amount = "1 уп.",
-                tags = listOf("крупы", "долгое хранение"),
-                imageResId = R.drawable.ic_grains,
-                addedAtMillis = today - days(30),
-                expirationAtMillis = null,
-            ),
-            StorageProductUi(
-                id = 5,
-                name = "Йогурт Epica",
-                amount = "1 шт.",
-                tags = listOf("молочка", "быстро портящийся"),
-                imageResId = R.drawable.ic_milk,
-                addedAtMillis = today - days(8),
-                expirationAtMillis = today - days(1),
-            ),
-        )
-    }
-
-    private fun days(value: Long): Long = value * 86_400_000L
 
     override fun onDestroyView() {
         _binding = null

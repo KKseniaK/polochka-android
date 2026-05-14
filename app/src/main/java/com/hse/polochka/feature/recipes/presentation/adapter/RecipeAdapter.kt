@@ -79,7 +79,7 @@ class RecipeAdapter(
             )
         )
         holder.timeTextView.text = item.time
-        holder.categoryTextView.text = item.category
+        holder.categoryTextView.text = RecipeTagFormatter.readable(item.category)
 
         holder.favoriteButton.setImageResource(
             if (item.isFavorite) R.drawable.ic_heart_filled

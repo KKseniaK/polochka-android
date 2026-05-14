@@ -1,6 +1,7 @@
 package com.hse.polochka.feature.storage.data.remote
 
 import com.hse.polochka.feature.storage.data.dto.CreateStorageProductRequestDto
+import com.hse.polochka.feature.storage.data.dto.CatalogSuggestionDto
 import com.hse.polochka.feature.storage.data.dto.StorageEventDto
 import com.hse.polochka.feature.storage.data.dto.StorageProductDto
 import com.hse.polochka.feature.storage.data.dto.WriteOffStorageProductRequestDto
@@ -10,6 +11,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface StorageApi {
 
@@ -30,4 +32,10 @@ interface StorageApi {
         @Path("productId") productId: Int,
         @Body request: WriteOffStorageProductRequestDto,
     ): Response<StorageEventDto>
+
+    @GET("storage/catalog/search")
+    suspend fun searchCatalog(
+        @Header("Authorization") authorization: String,
+        @Query("query") query: String,
+    ): Response<List<CatalogSuggestionDto>>
 }

@@ -101,6 +101,19 @@
                 tools:listitem="@layout/item_home_expiring_product"
                 tools:itemCount="4" />
 
+            <TextView
+                android:id="@+id/expiringEmptyTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:text="@string/home_expiring_empty_message"
+                android:textColor="@color/background_primary"
+                android:textSize="18sp"
+                android:lineSpacingExtra="2dp"
+                app:layout_constraintTop_toBottomOf="@id/expiringTitleTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
@@ -160,6 +173,26 @@
             tools:listitem="@layout/item_recipe_card"
             tools:itemCount="4" />
 
+        <TextView
+            android:id="@+id/homeRecipesEmptyTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/home_recipes_empty_message"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp"
+            android:lineSpacingExtra="2dp"
+            app:layout_constraintTop_toBottomOf="@id/homeRecipesTitleTextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/homeRecipesContentBarrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="homeRecipesRecyclerView,homeRecipesEmptyTextView" />
+
         <Button
             android:id="@+id/homeShowAllRecipesButton"
             android:layout_width="200dp"
@@ -171,7 +204,7 @@
             android:textAllCaps="false"
             android:textColor="@color/background_primary"
             android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@id/homeRecipesRecyclerView"
+            app:layout_constraintTop_toBottomOf="@id/homeRecipesContentBarrier"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 

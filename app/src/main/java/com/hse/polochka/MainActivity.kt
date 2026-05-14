@@ -3,6 +3,7 @@ package com.hse.polochka
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.hse.polochka.core.network.ApiClient
@@ -34,9 +35,12 @@ class MainActivity : AppCompatActivity() {
         authViewModel = createAuthViewModel()
 
         if (savedInstanceState == null) {
-            openFragment(WelcomeFragment())
             hideBottomMenu()
-            restoreSession()
+            if (authViewModel.hasToken()) {
+                restoreSession()
+            } else {
+                openAuthStart()
+            }
         }
 
         setupBottomMenu()
@@ -54,46 +58,73 @@ class MainActivity : AppCompatActivity() {
     private fun restoreSession() {
         lifecycleScope.launch {
             authViewModel.state.collect { state ->
-                if (state is AuthUiState.Authenticated) {
-                    authViewModel.resetState()
-                    openHome()
+                when (state) {
+                    is AuthUiState.Authenticated -> {
+                        authViewModel.resetState()
+                        openHome()
+                    }
+                    is AuthUiState.Error -> {
+                        authViewModel.resetState()
+                        openAuthStart()
+                    }
+                    else -> Unit
                 }
             }
         }
         authViewModel.restoreSession()
     }
 
+    private fun openAuthStart() {
+        hideBottomMenu()
+        openFragment(WelcomeFragment())
+    }
+
+    fun logoutToWelcome() {
+        authViewModel.logout()
+        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        hideBottomMenu()
+        openFragment(WelcomeFragment())
+    }
+
     private fun setupBottomMenu() {
         binding.bottomMenu.homeMenuButton.setOnClickListener {
+            showBottomMenu()
             selectBottomMenuItem(binding.bottomMenu.homeMenuButton)
             openFragment(HomeFragment())
         }
 
         binding.bottomMenu.storageMenuButton.setOnClickListener {
+            showBottomMenu()
             selectBottomMenuItem(binding.bottomMenu.storageMenuButton)
             openFragment(StorageFragment())
         }
 
         binding.bottomMenu.shoppingMenuButton.setOnClickListener {
+            showBottomMenu()
             selectBottomMenuItem(binding.bottomMenu.shoppingMenuButton)
             openFragment(ShoppingFragment())
         }
 
         binding.bottomMenu.recipesMenuButton.setOnClickListener {
+            showBottomMenu()
             selectBottomMenuItem(binding.bottomMenu.recipesMenuButton)
             openFragment(RecipesFragment())
         }
 
         binding.bottomMenu.profileMenuButton.setOnClickListener {
+            showBottomMenu()
             selectBottomMenuItem(binding.bottomMenu.profileMenuButton)
             openFragment(AnalyticsFragment())
         }
     }
 
     fun openHome() {
+        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         showBottomMenu()
         selectBottomMenuItem(binding.bottomMenu.homeMenuButton)
-        openFragment(HomeFragment())
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, HomeFragment())
+            .commit()
     }
 
     private fun openFragment(fragment: androidx.fragment.app.Fragment) {

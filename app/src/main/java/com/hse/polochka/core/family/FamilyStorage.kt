@@ -69,6 +69,10 @@ class FamilyStorage(context: Context) {
     fun createInviteLink(email: String): String =
         "https://polochka.local/invite?family=local-family&email=${email.trim()}"
 
+    fun clear() {
+        preferences.edit().clear().apply()
+    }
+
     private fun saveMembers(members: List<FamilyMember>) {
         preferences.edit()
             .putString(KEY_MEMBERS, gson.toJson(members))

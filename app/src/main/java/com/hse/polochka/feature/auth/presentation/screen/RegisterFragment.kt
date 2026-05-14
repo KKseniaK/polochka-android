@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.hse.polochka.MainActivity
 import com.hse.polochka.R
 import com.hse.polochka.core.network.ApiClient
 import com.hse.polochka.core.storage.UserSessionStorage
@@ -25,6 +26,7 @@ class RegisterFragment : Fragment(R.layout.activity_auth_register) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _binding = ActivityAuthRegisterBinding.bind(view)
+        (requireActivity() as MainActivity).hideBottomMenu()
         viewModel = createViewModel()
 
         binding.goLoginTextView.setOnClickListener {

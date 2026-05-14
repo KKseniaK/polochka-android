@@ -151,14 +151,15 @@
         android:id="@+id/emptyStateContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingHorizontal="24dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/productsRecyclerView"
-        app:layout_constraintEnd_toEndOf="@id/productsRecyclerView"
-        app:layout_constraintStart_toStartOf="@id/productsRecyclerView"
-        app:layout_constraintTop_toTopOf="@id/productsRecyclerView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addProductButton"
         tools:visibility="visible">
 
         <TextView
