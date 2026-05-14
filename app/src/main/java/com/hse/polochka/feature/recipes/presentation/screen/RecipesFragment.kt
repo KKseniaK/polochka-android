@@ -1,9 +1,12 @@
 package com.hse.polochka.feature.recipes.presentation.screen
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -73,12 +76,24 @@ class RecipesFragment : Fragment(R.layout.activity_recipes) {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                searchQuery = s.orEmpty().toString()
+                searchQuery = s?.toString().orEmpty()
                 renderFilteredRecipes()
             }
 
             override fun afterTextChanged(s: Editable?) = Unit
         })
+
+        binding.searchEditText.setOnEditorActionListener { view, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE) {
+                view.clearFocus()
+                val inputMethodManager =
+                    requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+                true
+            } else {
+                false
+            }
+        }
     }
 
     private fun loadRecipes() {

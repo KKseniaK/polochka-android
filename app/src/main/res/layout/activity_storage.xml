@@ -31,7 +31,9 @@
         android:drawableStart="@drawable/ic_search"
         android:drawablePadding="12dp"
         android:hint="@string/storage_search_hint"
+        android:imeOptions="actionSearch"
         android:inputType="text"
+        android:singleLine="true"
         android:paddingStart="18dp"
         android:paddingEnd="18dp"
         android:textColor="@color/text_primary"
@@ -52,6 +54,47 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/searchEditText" />
 
+    <LinearLayout
+        android:id="@+id/filterOptionsContainer"
+        android:layout_width="0dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchEditText"
+        tools:visibility="visible">
+
+        <Button
+            android:id="@+id/showAllFilterButton"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_button_primary"
+            android:text="@string/storage_filter_all_button"
+            android:textAllCaps="false"
+            android:textColor="@color/background_primary"
+            android:textSize="13sp"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/showSoonFilterButton"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_button_secondary"
+            android:text="@string/storage_filter_soon_button"
+            android:textAllCaps="false"
+            android:textColor="@color/text_primary"
+            android:textSize="13sp"
+            app:backgroundTint="@null" />
+
+    </LinearLayout>
+
     <View
         android:id="@+id/divider"
         android:layout_width="0dp"
@@ -60,7 +103,7 @@
         android:background="@drawable/bg_dashed_line"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchEditText" />
+        app:layout_constraintTop_toBottomOf="@id/filterOptionsContainer" />
 
     <LinearLayout
         android:id="@+id/bulkActionBar"

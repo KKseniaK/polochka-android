@@ -141,7 +141,12 @@
     <string name="content_description_close">Закрыть</string>
     <string name="content_description_add_product">Добавить продукт</string>
     <string name="storage_add_product_soon">скоро тут будет функция добавления</string>
-    <string name="storage_filter_soon">фильтр тоже будет работать</string>
+    <string name="storage_filter_soon">Показаны продукты, которые скоро испортятся</string>
+    <string name="storage_filter_all">Показаны все продукты</string>
+    <string name="storage_filter_all_button">Показать все</string>
+    <string name="storage_filter_soon_button">Скоро испортятся</string>
+    <string name="storage_empty_filtered_title">Ничего не нашлось</string>
+    <string name="storage_empty_filtered_subtitle">Попробуйте другой запрос или выключите фильтр</string>
     <string name="storage_life_long">срок не указан</string>
     <string name="storage_expired_label">ИСПОРЧЕНО</string>
     <string name="storage_write_off_selected">Списать выбранное</string>
@@ -197,6 +202,23 @@
 
     <!-- профиль -->
     <string name="profile_logout">Выйти</string>
+    <string name="profile_help_section_title">Помощь</string>
+    <string name="profile_info">Инструкция</string>
+    <string name="profile_user_agreement">Пользовательское соглашение</string>
+    <string name="profile_privacy_policy">Политика приложения</string>
+    <string name="profile_feedback">Написать отзыв</string>
+    <string name="profile_help">Помощь и связь с разработчиком</string>
+    <string name="profile_deactivate">Деактивировать аккаунт</string>
+    <string name="profile_info_stub">Инструкция появится здесь позже</string>
+    <string name="profile_user_agreement_stub">Пользовательское соглашение добавим позже</string>
+    <string name="profile_privacy_policy_stub">Политику приложения добавим позже</string>
+    <string name="profile_feedback_stub">Форма отзыва появится позже</string>
+    <string name="profile_help_stub">Контакты для помощи добавим позже</string>
+    <string name="profile_deactivate_title">Деактивация аккаунта</string>
+    <string name="profile_deactivate_message">Вы точно хотите безвозвратно деактивировать аккаунт? Это действие нельзя будет отменить.</string>
+    <string name="profile_deactivate_confirm">Да, деактивировать</string>
+    <string name="profile_deactivate_cancel">Отмена</string>
+    <string name="profile_deactivate_stub">Деактивацию аккаунта подключим позже</string>
     <string name="profile_preferences_title">Предпочтения</string>
     <string name="profile_liked_tags_title">Люблю</string>
     <string name="profile_restricted_tags_title">Не люблю / ограничения</string>

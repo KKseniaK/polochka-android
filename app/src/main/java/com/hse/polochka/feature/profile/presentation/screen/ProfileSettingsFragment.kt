@@ -1,5 +1,6 @@
 package com.hse.polochka.feature.profile.presentation.screen
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -85,6 +86,10 @@ class ProfileSettingsFragment : Fragment(R.layout.activity_profile) {
             toggleEditMode()
         }
 
+        binding.infoButton.setOnClickListener {
+            showStubToast(R.string.profile_info_stub)
+        }
+
         binding.addFamilyMemberButton.setOnClickListener {
             InviteMemberDialogFragment().apply {
                 onInvitationCreated = {
@@ -96,6 +101,41 @@ class ProfileSettingsFragment : Fragment(R.layout.activity_profile) {
         binding.logoutButton.setOnClickListener {
             (requireActivity() as MainActivity).logoutToWelcome()
         }
+
+        binding.userAgreementButton.setOnClickListener {
+            showStubToast(R.string.profile_user_agreement_stub)
+        }
+
+        binding.privacyPolicyButton.setOnClickListener {
+            showStubToast(R.string.profile_privacy_policy_stub)
+        }
+
+        binding.feedbackButton.setOnClickListener {
+            showStubToast(R.string.profile_feedback_stub)
+        }
+
+        binding.helpButton.setOnClickListener {
+            showStubToast(R.string.profile_help_stub)
+        }
+
+        binding.deactivateAccountButton.setOnClickListener {
+            showDeactivateAccountDialog()
+        }
+    }
+
+    private fun showStubToast(messageResId: Int) {
+        Toast.makeText(requireContext(), getString(messageResId), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showDeactivateAccountDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.profile_deactivate_title))
+            .setMessage(getString(R.string.profile_deactivate_message))
+            .setPositiveButton(getString(R.string.profile_deactivate_confirm)) { _, _ ->
+                showStubToast(R.string.profile_deactivate_stub)
+            }
+            .setNegativeButton(getString(R.string.profile_deactivate_cancel), null)
+            .show()
     }
 
     private fun toggleEditMode() {
