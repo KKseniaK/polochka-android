@@ -124,7 +124,7 @@ Includes:
 The recipe system allows users to discover meals using ingredients already available at home.
 
 <p align="center">
-<img src="assets/screens/pecipe.png">
+<img src="assets/pecipe.png">
 </p>
 
 Features include:
