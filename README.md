@@ -12,7 +12,7 @@
 ---
 
 <p align="center">
-<img src="assets/icon.png" width="180">
+<img src="assets/icon.png" width="60%">
 </p>
 
 ---
@@ -66,7 +66,7 @@ The project was awarded **3rd Place**, recognizing both the technical implementa
 The application is organized around several key modules that provide quick access to everyday functionality.
 
 <p align="center">
-<img src="assets/screens/main.png">
+<img src="assets/main.png">
 </p>
 
 From the main screen users can navigate to:
@@ -86,7 +86,7 @@ The navigation structure was designed to minimize the number of actions required
 Special attention was paid to user experience even when no data is available.
 
 <p align="center">
-<img src="assets/screens/empty_states.png">
+<img src="assets/empty.png">
 </p>
 
 Designed empty states include:
@@ -106,7 +106,7 @@ Instead of displaying blank pages, every state provides contextual illustrations
 The authentication flow focuses on simplicity and intuitive interaction.
 
 <p align="center">
-<img src="assets/screens/authentication.png">
+<img src="assets/reg.png">
 </p>
 
 Includes:
@@ -124,7 +124,7 @@ Includes:
 The recipe system allows users to discover meals using ingredients already available at home.
 
 <p align="center">
-<img src="assets/screens/recipes.png">
+<img src="assets/screens/pecipe.png">
 </p>
 
 Features include:
@@ -145,7 +145,7 @@ Future versions will include recommendation algorithms and voice-assisted cookin
 A separate set of interfaces was designed to gracefully handle exceptional situations.
 
 <p align="center">
-<img src="assets/screens/errors.png">
+<img src="assets/confl.png">
 </p>
 
 Examples include:
@@ -166,7 +166,7 @@ Each screen clearly communicates the problem and suggests possible recovery acti
 The project follows a layered client-server architecture that separates presentation, business logic and data access into independent components.
 
 <p align="center">
-<img src="assets/architecture.png">
+<img src="assets/dia_arc.png">
 </p>
 
 ### Architecture Overview
